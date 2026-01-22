@@ -1,59 +1,65 @@
-# Enhanced Vite React TypeScript Template
+# Therapy Pathways Application
 
-This template includes built-in detection for missing CSS variables between your Tailwind config and CSS files.
+## Overview
+Therapy Pathways is a comprehensive application designed to assist individuals on their therapeutic journeys. It provides users with personalized pathways based on their specific needs, ensuring a tailored approach to mental health and wellness.
 
 ## Features
+- **User Profiles**: Users can create and manage their own profiles to track their progress.
+- **Personalized Pathways**: The application offers tailored therapeutic pathways based on user inputs.
+- **Resource Library**: Access to a curated library of articles, videos, and exercises relevant to various therapeutic modalities.
+- **Progress Tracking**: Users can monitor their progress over time with insights and analytics.
+- **Community Support**: Integration of forums and community features for users to connect and support one another.
 
-- **CSS Variable Detection**: Automatically detects if CSS variables referenced in `tailwind.config.cjs` are defined in `src/index.css`
-- **Enhanced Linting**: Includes ESLint, Stylelint, and custom CSS variable validation
-- **Shadcn/ui**: Pre-configured with all Shadcn components
-- **Modern Stack**: Vite + React + TypeScript + Tailwind CSS
+## Tech Stack
+- **Frontend**: React.js
+- **Backend**: Node.js with Express
+- **Database**: MongoDB
+- **Deployment**: Heroku/AWS
+- **Authentication**: JWT (JSON Web Tokens)
 
-## Available Scripts
+## Installation Instructions
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/sarahdenkert01-hue/therapy-companion.git
+   cd therapy-companion
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up environment variables. Create a `.env` file in the root directory and add your configurations:
+   ```
+   DATABASE_URL=<your_database_url>
+   JWT_SECRET=<your_jwt_secret>
+   ```
+4. Run the application:
+   ```bash
+   npm start
+   ```
 
-```bash
-# Run all linting (includes CSS variable check)
-npm run lint
-
-# Check only CSS variables
-npm run check:css-vars
-
-# Individual linting
-npm run lint:js    # ESLint
-npm run lint:css   # Stylelint
+## Project Structure
+```
+therapy-companion/
+├── client/              # Frontend code
+├── server/              # Backend code
+├── README.md            # Documentation
+└── .env                 # Environment variables
 ```
 
-## CSS Variable Detection
+## Deployment Guides
+- For deployment on Heroku:
+  1. Create a new Heroku app:
+  ```bash
+  heroku create
+  ```
+  2. Push your code:
+  ```bash
+  git push heroku main
+  ```
 
-The template includes a custom script that:
+- For AWS deployment:
+  1. Set up an AWS Elastic Beanstalk application.
+  2. Configure it to connect to your MongoDB instance.
 
-1. **Parses `tailwind.config.cjs`** to find all `var(--variable)` references
-2. **Parses `src/index.css`** to find all defined CSS variables (`--variable:`)
-3. **Cross-references** them to find missing definitions
-4. **Reports undefined variables** with clear error messages
-
-### Example Output
-
-When CSS variables are missing:
-```
-❌ Undefined CSS variables found in tailwind.config.cjs:
-   --sidebar-background
-   --sidebar-foreground
-   --sidebar-primary
-
-Add these variables to src/index.css
-```
-
-When all variables are defined:
-```
-✅ All CSS variables in tailwind.config.cjs are defined
-```
-
-## How It Works
-
-The detection happens during the `npm run lint` command, which will:
-- Exit with error code 1 if undefined variables are found
-- Show exactly which variables need to be added to your CSS file
-- Integrate seamlessly with your development workflow
-
-This prevents runtime CSS issues where Tailwind classes reference undefined CSS variables.
+## Privacy Information
+We take user privacy seriously. All sensitive data is encrypted and stored according to industry standards. User information is never shared with third parties. Please refer to our detailed privacy policy in the settings of your application for more information.
