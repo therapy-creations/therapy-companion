@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Heart, Shield, Sparkles, TrendingUp } from 'lucide-react'
-import { supabase } from '@/lib/supabaseClient'
+import { supabase } from '@/lib/supabase'
 
 export default function LandingPage() {
   const handleLogin = async () => {
