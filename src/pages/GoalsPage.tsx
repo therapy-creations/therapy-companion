@@ -1,69 +1,34 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabase'
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { supabase } from '@/lib/supabaseClient'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Progress } from '@/components/ui/progress'
-import { 
-  Plus, 
-  Target, 
-  CheckCircle2, 
-  Trophy,
-  MoreHorizontal,
-  Trash2,
-  ChevronRight,
-  TrendingUp
-} from 'lucide-react'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter
-} from '@/components/ui/dialog'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import confetti from 'canvas-confetti'
 
 export default function GoalsPage() {
   const [loading, setLoading] = useState(true)
   const [goals, setGoals] = useState<any[]>([])
-  const [isAddOpen, setIsAddOpen] = useState(false)
-  const [newTitle, setNewTitle] = useState('')
-  const [targetProgress, setTargetProgress] = useState('100')
-  const [user, setUser] = useState<any>(null)
+  const [newGoal, setNewGoal] = useState('')
 
-  // Fetch current user
   useEffect(() => {
-    const sessionUser = supabase.auth.user()
-    setUser(sessionUser)
+    fetchGoals()
   }, [])
 
-  useEffect(() => {
-    if (user) fetchGoals()
-  }, [user])
-
   const fetchGoals = async () => {
+    setLoading(true)
     try {
-      setLoading(true)
+      const user = supabase.auth.user()
+      if (!user) return
       const { data, error } = await supabase
         .from('goals')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
-
       if (error) throw error
-      setGoals(data || [])
-    } catch (error) {
-      console.error('Error fetching goals:', error)
+      setGoals(data)
+    } catch (err) {
+      console.error(err)
       toast.error('Failed to load goals')
     } finally {
       setLoading(false)
@@ -71,76 +36,67 @@ export default function GoalsPage() {
   }
 
   const handleAddGoal = async () => {
-    if (!newTitle.trim()) return
+    if (!newGoal.trim()) return
     try {
-      const { error } = await supabase.from('goals').insert([{
+      const user = supabase.auth.user()
+      if (!user) return
+      const { error } = await supabase.from('goals').insert({
+        id: crypto.randomUUID(),
         user_id: user.id,
-        title: newTitle.trim(),
-        target_progress: parseInt(targetProgress) || 100,
-        current_progress: 0,
-        is_completed: 0,
-        created_at: new Date().toISOString()
-      }])
-
+        title: newGoal.trim(),
+        is_completed: 0
+      })
       if (error) throw error
-      setIsAddOpen(false)
-      setNewTitle('')
+      setNewGoal('')
       toast.success('Goal added')
       fetchGoals()
-    } catch (error) {
-      console.error('Error adding goal:', error)
+    } catch (err) {
+      console.error(err)
       toast.error('Failed to add goal')
     }
   }
 
-  const handleUpdateProgress = async (goal: any, increment: number) => {
+  const handleToggleComplete = async (goal: any) => {
     try {
-      const newProgress = Math.min(Math.max(Number(goal.current_progress) + increment, 0), Number(goal.target_progress))
-      const isCompleted = newProgress >= Number(goal.target_progress)
-
-      if (isCompleted && Number(goal.is_completed) === 0) {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
-        toast.success('Goal achieved! Congratulations!')
-      }
-
       const { error } = await supabase
         .from('goals')
-        .update({
-          current_progress: newProgress,
-          is_completed: isCompleted ? 1 : 0
-        })
+        .update({ is_completed: goal.is_completed ? 0 : 1 })
         .eq('id', goal.id)
-
       if (error) throw error
       fetchGoals()
-    } catch (error) {
-      console.error('Error updating progress:', error)
-      toast.error('Failed to update progress')
+    } catch (err) {
+      console.error(err)
+      toast.error('Failed to update goal')
     }
   }
 
-  const handleDeleteGoal = async (id: string) => {
-    try {
-      const { error } = await supabase.from('goals').delete().eq('id', id)
-      if (error) throw error
-      toast.success('Goal removed')
-      fetchGoals()
-    } catch (error) {
-      console.error('Error deleting goal:', error)
-      toast.error('Failed to remove goal')
-    }
-  }
-
-  const activeGoals = goals.filter(g => Number(g.is_completed) === 0)
-  const completedGoals = goals.filter(g => Number(g.is_completed) > 0)
-
-  if (loading) return <div className="flex items-center justify-center h-[60vh]"><Spinner size="lg" /></div>
+  if (loading) return <Spinner size="lg" className="mx-auto mt-20" />
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
-      {/* Header and Add Goal Dialog */}
-      {/* ... Keep the same UI code for Dialog and Cards ... */}
-      {/* Replace all goal data with the Supabase-fetched `goals` array */}
+    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+      <div className="flex gap-2">
+        <Input
+          placeholder="Add a new goal..."
+          value={newGoal}
+          onChange={(e) => setNewGoal(e.target.value)}
+        />
+        <Button onClick={handleAddGoal}>Add</Button>
+      </div>
+
+      {goals.length === 0 ? (
+        <p className="text-center text-muted-foreground py-12">No goals yet.</p>
+      ) : (
+        <div className="space-y-3">
+          {goals.map((goal) => (
+            <Card key={goal.id} className="flex items-center justify-between p-4">
+              <p className={goal.is_completed ? 'line-through text-muted-foreground' : ''}>{goal.title}</p>
+              <Button variant="outline" size="sm" onClick={() => handleToggleComplete(goal)}>
+                {goal.is_completed ? 'Undo' : 'Complete'}
+              </Button>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
