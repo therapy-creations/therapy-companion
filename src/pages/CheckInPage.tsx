@@ -1,262 +1,77 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { supabase } from '@/lib/supabase'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { useParams } from 'react-router-dom'
+import { supabase } from '@/lib/supabaseClient'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { 
-  ArrowLeft, 
-  Save, 
-  ChevronRight, 
-  ChevronLeft, 
-  CheckCircle2
-} from 'lucide-react'
-import { format, parseISO } from 'date-fns'
+import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
-import { Progress } from '@/components/ui/progress'
-import { Badge } from '@/components/ui/badge'
-
-const steps = [
-  { title: 'Current State', description: 'How are you feeling after your session?' },
-  { title: 'Key Takeaways', description: 'What were the most important points discussed?' },
-  { title: 'Topics Covered', description: 'What specific topics did you dive into today?' },
-  { title: 'Looking Forward', description: 'What progress did you make and what are the next steps?' }
-]
 
 export default function CheckInPage() {
-  const { appointmentId } = useParams()
-  const navigate = useNavigate()
+  const { sessionId } = useParams<{ sessionId: string }>()
   const [loading, setLoading] = useState(true)
-  const [currentStep, setCurrentStep] = useState(0)
-  const [appointment, setAppointment] = useState<any>(null)
-  
-  const [formData, setFormData] = useState({
-    feeling: '',
-    takeaways: '',
-    topicsDiscussed: '',
-    progress: ''
-  })
+  const [session, setSession] = useState<any>(null)
+  const [notes, setNotes] = useState('')
 
-  const [user, setUser] = useState<any>(null)
-
-  // Get current user
   useEffect(() => {
-    const sessionUser = supabase.auth.user()
-    setUser(sessionUser)
+    fetchSession()
   }, [])
 
-  // Fetch appointment and reflection data
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!user || !appointmentId) {
-        setLoading(false)
-        return
-      }
-
-      setLoading(true)
-      try {
-        // Get appointment
-        const { data: apptData, error: apptError } = await supabase
-          .from('appointments')
-          .select('*')
-          .eq('id', appointmentId)
-          .single()
-
-        if (apptError) throw apptError
-        setAppointment(apptData)
-
-        // Get session reflection
-        const { data: reflections, error: reflError } = await supabase
-          .from('session_reflections')
-          .select('*')
-          .eq('appointment_id', appointmentId)
-
-        if (reflError) throw reflError
-
-        if (reflections && reflections.length > 0) {
-          const r = reflections[0]
-          setFormData({
-            feeling: r.feeling || '',
-            takeaways: r.takeaways || '',
-            topicsDiscussed: r.topics_discussed || '',
-            progress: r.progress || ''
-          })
-        }
-      } catch (error) {
-        console.error('Error fetching reflection data:', error)
-        toast.error('Failed to load session data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchData()
-  }, [user, appointmentId])
-
-  const handleSave = async () => {
-    if (!user) return
-
+  const fetchSession = async () => {
     setLoading(true)
     try {
-      const { data: existing, error: existingError } = await supabase
-        .from('session_reflections')
+      const { data, error } = await supabase
+        .from('appointments')
         .select('*')
-        .eq('appointment_id', appointmentId)
-
-      if (existingError) throw existingError
-
-      const reflectionData = {
-        user_id: user.id,
-        appointment_id: appointmentId || 'manual',
-        feeling: formData.feeling,
-        takeaways: formData.takeaways,
-        topics_discussed: formData.topicsDiscussed,
-        progress: formData.progress,
-        created_at: new Date().toISOString()
-      }
-
-      if (existing && existing.length > 0) {
-        // Update existing reflection
-        const { error: updateError } = await supabase
-          .from('session_reflections')
-          .update(reflectionData)
-          .eq('id', existing[0].id)
-        if (updateError) throw updateError
-      } else {
-        // Create new reflection
-        const { error: insertError } = await supabase
-          .from('session_reflections')
-          .insert([{ ...reflectionData }])
-        if (insertError) throw insertError
-      }
-
-      toast.success('Reflection saved successfully')
-      navigate('/sessions')
-    } catch (error) {
-      console.error('Error saving reflection:', error)
-      toast.error('Failed to save reflection')
+        .eq('id', sessionId)
+        .single()
+      if (error) throw error
+      setSession(data)
+      setNotes(data?.notes || '')
+    } catch (err) {
+      console.error(err)
+      toast.error('Failed to load session')
     } finally {
       setLoading(false)
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <Spinner size="lg" />
-      </div>
-    )
+  const handleSave = async () => {
+    try {
+      const { error } = await supabase
+        .from('appointments')
+        .update({ notes })
+        .eq('id', sessionId)
+      if (error) throw error
+      toast.success('Check-in saved!')
+    } catch (err) {
+      console.error(err)
+      toast.error('Failed to save check-in')
+    }
   }
 
-  const isLastStep = currentStep === steps.length - 1
-  const progress = ((currentStep + 1) / steps.length) * 100
+  if (loading) return <Spinner size="lg" className="mx-auto mt-20" />
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back
-        </Button>
-        {appointment && (
-          <Badge variant="outline">
-            Session: {format(parseISO(appointment.date), 'MMM do, yyyy')}
-          </Badge>
-        )}
-      </div>
-
-      <div className="space-y-4">
-        <div className="flex justify-between items-end">
-          <div className="space-y-1">
-            <h1 className="text-3xl font-bold tracking-tight">{steps[currentStep].title}</h1>
-            <p className="text-muted-foreground">{steps[currentStep].description}</p>
+    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+      <Card>
+        <CardHeader>
+          <CardTitle>{session?.status === 'completed' ? 'Reflection' : 'Prepare for Session'}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="notes" className="font-medium">Notes / Focus Points</label>
+            <Input
+              id="notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="h-32 resize-none"
+              as="textarea"
+            />
           </div>
-          <span className="text-sm font-medium text-muted-foreground">Step {currentStep + 1} of 4</span>
-        </div>
-        <Progress value={progress} className="h-2" />
-      </div>
-
-      <Card className="min-h-[300px] flex flex-col">
-        <CardContent className="flex-1 pt-6">
-          {currentStep === 0 && (
-            <div className="space-y-4">
-              <Label>How are you feeling after this session?</Label>
-              <Textarea 
-                placeholder="Exhausted but hopeful, relieved, frustrated..." 
-                className="min-h-[200px] text-lg resize-none"
-                value={formData.feeling}
-                onChange={(e) => setFormData(prev => ({ ...prev, feeling: e.target.value }))}
-              />
-            </div>
-          )}
-          {currentStep === 1 && (
-            <div className="space-y-4">
-              <Label>What were your key takeaways?</Label>
-              <Textarea 
-                placeholder="What did you learn about yourself today? What clicked?" 
-                className="min-h-[200px] text-lg resize-none"
-                value={formData.takeaways}
-                onChange={(e) => setFormData(prev => ({ ...prev, takeaways: e.target.value }))}
-              />
-            </div>
-          )}
-          {currentStep === 2 && (
-            <div className="space-y-4">
-              <Label>What topics were discussed?</Label>
-              <Textarea 
-                placeholder="Family patterns, boundaries at work, coping with anxiety..." 
-                className="min-h-[200px] text-lg resize-none"
-                value={formData.topicsDiscussed}
-                onChange={(e) => setFormData(prev => ({ ...prev, topicsDiscussed: e.target.value }))}
-              />
-            </div>
-          )}
-          {currentStep === 3 && (
-            <div className="space-y-4">
-              <Label>What progress did you make and what's next?</Label>
-              <Textarea 
-                placeholder="I successfully spoke up for myself. Next week I want to focus on..." 
-                className="min-h-[200px] text-lg resize-none"
-                value={formData.progress}
-                onChange={(e) => setFormData(prev => ({ ...prev, progress: e.target.value }))}
-              />
-            </div>
-          )}
+          <Button onClick={handleSave}>Save</Button>
         </CardContent>
-        <CardFooter className="flex justify-between border-t py-4">
-          <Button 
-            variant="ghost" 
-            onClick={() => setCurrentStep(prev => prev - 1)}
-            disabled={currentStep === 0}
-          >
-            <ChevronLeft className="h-4 w-4 mr-2" />
-            Previous
-          </Button>
-          {isLastStep ? (
-            <Button onClick={handleSave} className="bg-primary hover:bg-primary/90">
-              <Save className="h-4 w-4 mr-2" />
-              Complete Reflection
-            </Button>
-          ) : (
-            <Button onClick={() => setCurrentStep(prev => prev + 1)}>
-              Next
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
-          )}
-        </CardFooter>
       </Card>
-      
-      {currentStep === 3 && (
-        <div className="flex flex-col items-center justify-center p-8 text-center space-y-4 animate-fade-in">
-          <CheckCircle2 className="h-12 w-12 text-primary" />
-          <div className="space-y-2">
-            <h3 className="text-xl font-bold">You're doing great.</h3>
-            <p className="text-muted-foreground">Self-reflection is a powerful tool for growth. Take a moment to breathe and acknowledge the work you did today.</p>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
