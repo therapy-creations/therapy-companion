@@ -1,66 +1,97 @@
 import { useState, useEffect } from 'react'
-import { blink } from '@/lib/blink'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { supabase } from '@/lib/supabaseClient'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { 
-  User, 
-  Settings, 
-  LogOut, 
-  Camera, 
-  Shield, 
-  Heart, 
-  Calendar,
-  MessageSquare,
-  Target
-} from 'lucide-react'
+import { Shield, Heart, Camera, Settings, LogOut, Calendar, MessageSquare, Target } from 'lucide-react'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
-import { motion } from 'framer-motion'
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<any>(null)
-  const [stats, setStats] = useState({ sessions: 0, topics: 0, goals: 0, moods: 0 })
+  const [stats, setStats] = useState({
+    sessions: 0,
+    topics: 0,
+    goals: 0,
+    moods: 0
+  })
+  
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState({ displayName: '', therapistName: '', avatarUrl: '' })
+  const [formData, setFormData] = useState({
+    displayName: '',
+    therapistName: '',
+    avatarUrl: ''
+  })
 
-  useEffect(() => { fetchProfileData() }, [])
+  useEffect(() => {
+    fetchProfileData()
+  }, [])
 
   const fetchProfileData = async () => {
     try {
       setLoading(true)
-      const { user } = await blink.auth.me()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
-      const profiles = await blink.db.user_profiles.list({ where: { user_id: user.id } })
-      let p = profiles[0]
-      if (!p) {
-        p = await blink.db.user_profiles.create({
-          user_id: user.id,
-          display_name: user.email?.split('@')[0] || 'User',
-          therapist_name: '',
-          avatar_url: ''
+      // Fetch profile
+      const { data: profiles, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user.id)
+
+      if (profileError) throw profileError
+
+      if (profiles && profiles.length > 0) {
+        const p = profiles[0]
+        setProfile(p)
+        setFormData({
+          displayName: p.display_name || user.email?.split('@')[0] || '',
+          therapistName: p.therapist_name || '',
+          avatarUrl: p.avatar_url || ''
+        })
+      } else {
+        // Create initial profile
+        const { data: newProfile, error: createError } = await supabase
+          .from('user_profiles')
+          .insert([{
+            user_id: user.id,
+            display_name: user.email?.split('@')[0] || 'User',
+            therapist_name: '',
+            avatar_url: ''
+          }])
+          .select()
+          .single()
+
+        if (createError) throw createError
+
+        setProfile(newProfile)
+        setFormData({
+          displayName: newProfile.display_name,
+          therapistName: '',
+          avatarUrl: ''
         })
       }
 
-      setProfile(p)
-      setFormData({
-        displayName: p.display_name || user.email?.split('@')[0] || '',
-        therapistName: p.therapist_name || '',
-        avatarUrl: p.avatar_url || ''
-      })
-
-      const [sessionsCount, topicsCount, goalsCount, moodsCount] = await Promise.all([
-        blink.db.appointments.count({ where: { user_id: user.id, status: 'completed' } }),
-        blink.db.topics.count({ where: { user_id: user.id, is_completed: "1" } }),
-        blink.db.goals.count({ where: { user_id: user.id, is_completed: "1" } }),
-        blink.db.mood_logs.count({ where: { user_id: user.id } })
+      // Fetch stats
+      const [sessionsCountRes, topicsCountRes, goalsCountRes, moodsCountRes] = await Promise.all([
+        supabase.from('appointments').select('*', { count: 'exact' }).eq('user_id', user.id).eq('status', 'completed'),
+        supabase.from('topics').select('*', { count: 'exact' }).eq('user_id', user.id).eq('is_completed', true),
+        supabase.from('goals').select('*', { count: 'exact' }).eq('user_id', user.id).eq('is_completed', true),
+        supabase.from('mood_logs').select('*', { count: 'exact' }).eq('user_id', user.id)
       ])
 
-      setStats({ sessions: sessionsCount, topics: topicsCount, goals: goalsCount, moods: moodsCount })
+      setStats({
+        sessions: sessionsCountRes.count || 0,
+        topics: topicsCountRes.count || 0,
+        goals: goalsCountRes.count || 0,
+        moods: moodsCountRes.count || 0
+      })
+
     } catch (error) {
       console.error('Error fetching profile data:', error)
       toast.error('Failed to load profile')
@@ -71,16 +102,28 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     try {
-      const { user } = await blink.auth.me()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
-      await blink.db.user_profiles.update(user.id, {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          display_name: formData.displayName,
+          therapist_name: formData.therapistName,
+          avatar_url: formData.avatarUrl
+        })
+        .eq('user_id', user.id)
+
+      if (error) throw error
+
+      setProfile({
+        ...profile,
         display_name: formData.displayName,
         therapist_name: formData.therapistName,
         avatar_url: formData.avatarUrl
       })
-
-      setProfile({ ...profile, display_name: formData.displayName, therapist_name: formData.therapistName, avatar_url: formData.avatarUrl })
       setIsEditing(false)
       toast.success('Profile updated')
     } catch (error) {
@@ -92,12 +135,18 @@ export default function ProfilePage() {
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
     try {
-      const { publicUrl } = await blink.storage.upload(
-        file,
-        `avatars/${profile.user_id}-${Date.now()}.${file.name.split('.').pop()}`
-      )
-      setFormData(prev => ({ ...prev, avatarUrl: publicUrl }))
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${profile.user_id}-${Date.now()}.${fileExt}`
+      const { data, error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file)
+
+      if (uploadError) throw uploadError
+
+      const { data: publicData } = supabase.storage.from('avatars').getPublicUrl(fileName)
+      setFormData(prev => ({ ...prev, avatarUrl: publicData.publicUrl }))
       toast.success('Photo uploaded. Click save to apply.')
     } catch (error) {
       console.error('Error uploading avatar:', error)
@@ -105,20 +154,25 @@ export default function ProfilePage() {
     }
   }
 
-  const handleLogout = () => blink.auth.logout()
+  const handleLogout = () => {
+    supabase.auth.signOut()
+  }
 
-  if (loading) return (
-    <div className="flex items-center justify-center h-[60vh]">
-      <Spinner size="lg" />
-    </div>
-  )
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <Spinner size="lg" />
+      </div>
+    )
+  }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
         <Button variant="outline" size="sm" onClick={handleLogout} className="text-destructive border-destructive/20 hover:bg-destructive/10">
-          <LogOut className="h-4 w-4 mr-2" /> Log out
+          <LogOut className="h-4 w-4 mr-2" />
+          Log out
         </Button>
       </div>
 
@@ -129,7 +183,9 @@ export default function ProfilePage() {
             <div className="relative group">
               <Avatar className="h-32 w-32 border-4 border-muted">
                 <AvatarImage src={formData.avatarUrl || ''} />
-                <AvatarFallback className="text-4xl bg-primary/5">{formData.displayName?.[0]?.toUpperCase() || 'U'}</AvatarFallback>
+                <AvatarFallback className="text-4xl bg-primary/5">
+                  {formData.displayName?.[0]?.toUpperCase() || 'U'}
+                </AvatarFallback>
               </Avatar>
               <label className="absolute bottom-0 right-0 h-10 w-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-lg border-2 border-background">
                 <Camera className="h-5 w-5" />
@@ -157,7 +213,8 @@ export default function ProfilePage() {
               <CardTitle>Account Details</CardTitle>
               {!isEditing ? (
                 <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
-                  <Settings className="h-4 w-4 mr-2" /> Edit Profile
+                  <Settings className="h-4 w-4 mr-2" />
+                  Edit Profile
                 </Button>
               ) : (
                 <div className="flex gap-2">
@@ -170,11 +227,21 @@ export default function ProfilePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="displayName">Display Name</Label>
-                  <Input id="displayName" value={formData.displayName} onChange={(e) => setFormData(prev => ({ ...prev, displayName: e.target.value }))} disabled={!isEditing} />
+                  <Input 
+                    id="displayName" 
+                    value={formData.displayName} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, displayName: e.target.value }))}
+                    disabled={!isEditing}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="therapistName">Therapist Name</Label>
-                  <Input id="therapistName" value={formData.therapistName} onChange={(e) => setFormData(prev => ({ ...prev, therapistName: e.target.value }))} disabled={!isEditing} />
+                  <Input 
+                    id="therapistName" 
+                    value={formData.therapistName} 
+                    onChange={(e) => setFormData(prev => ({ ...prev, therapistName: e.target.value }))}
+                    disabled={!isEditing}
+                  />
                 </div>
               </div>
             </CardContent>
@@ -183,30 +250,47 @@ export default function ProfilePage() {
           <Card>
             <CardHeader>
               <CardTitle>Your Journey in Numbers</CardTitle>
-              <CardDescription>A summary of your commitment to personal growth.</CardDescription>
+              <p className="text-sm text-muted-foreground">A summary of your commitment to personal growth.</p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {[
-                  { icon: Calendar, label: 'Sessions', value: stats.sessions, desc: 'Completed therapy sessions' },
-                  { icon: MessageSquare, label: 'Topics', value: stats.topics, desc: 'Meaningful topics discussed' },
-                  { icon: Target, label: 'Goals', value: stats.goals, desc: 'Milestones achieved' },
-                  { icon: Heart, label: 'Moods', value: stats.moods, desc: 'Daily check-ins logged' },
-                ].map((stat, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="p-4 rounded-2xl bg-muted/30 border space-y-2 text-center">
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                      <stat.icon className="h-4 w-4" />
-                      <span className="text-xs font-bold uppercase">{stat.label}</span>
-                    </div>
-                    <p className="text-3xl font-bold">{stat.value}</p>
-                    <p className="text-[10px] text-muted-foreground">{stat.desc}</p>
-                  </motion.div>
-                ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Calendar className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase">Sessions</span>
+                  </div>
+                  <p className="text-3xl font-bold">{stats.sessions}</p>
+                  <p className="text-[10px] text-muted-foreground">Completed therapy sessions</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <MessageSquare className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase">Topics</span>
+                  </div>
+                  <p className="text-3xl font-bold">{stats.topics}</p>
+                  <p className="text-[10px] text-muted-foreground">Meaningful topics discussed</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Target className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase">Goals</span>
+                  </div>
+                  <p className="text-3xl font-bold">{stats.goals}</p>
+                  <p className="text-[10px] text-muted-foreground">Milestones achieved</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Heart className="h-4 w-4" />
+                    <span className="text-xs font-bold uppercase">Moods</span>
+                  </div>
+                  <p className="text-3xl font-bold">{stats.moods}</p>
+                  <p className="text-[10px] text-muted-foreground">Daily check-ins logged</p>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
