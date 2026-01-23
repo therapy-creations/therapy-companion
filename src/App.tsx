@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useBlinkAuth } from '@blinkdotnew/react'
 import { Layout } from './components/layout/Layout'
 import LandingPage from './pages/LandingPage'
 import HomePage from './pages/HomePage'
@@ -11,8 +10,6 @@ import JournalPage from './pages/JournalPage'
 import ProfilePage from './pages/ProfilePage'
 import { Spinner } from './components/ui/spinner'
 
-function App() {
-  const { isAuthenticated, isLoading } = useBlinkAuth()
 
   if (isLoading) {
     return (
