@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import LandingPage from './pages/LandingPage'
@@ -12,63 +12,58 @@ import ProfilePage from './pages/ProfilePage'
 import { Spinner } from './components/ui/spinner'
 import { supabase } from './lib/supabase'
 
-const App: React.FC = () => {
+export default function App() {
   const [user, setUser] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState<any[]>([])
 
-  // Check auth on load
+  // ✅ Load session on startup
   useEffect(() => {
-    const sessionUser = supabase.auth.user()
-    setUser(sessionUser)
-    setIsLoading(false)
+    const loadUser = async () => {
+      const { data } = await supabase.auth.getUser()
+      setUser(data.user ?? null)
+      setLoading(false)
+    }
 
-    // Listen for auth changes
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    loadUser()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
 
-    return () => {
-      listener?.unsubscribe()
-    }
+    return () => subscription.unsubscribe()
   }, [])
 
-  // Example: fetch appointments for logged-in user
+  // ✅ Fetch appointments
   useEffect(() => {
+    if (!user) return
+
     const fetchAppointments = async () => {
-      if (!user) return
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('appointments')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('date', { ascending: false })
 
-      setIsLoading(true)
-      try {
-        const { data, error } = await supabase
-          .from('appointments')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('date', { ascending: false })
-
-        if (error) throw error
-        setAppointments(data)
-      } catch (err) {
-        console.error('Error fetching appointments:', err)
-      } finally {
-        setIsLoading(false)
-      }
+      if (!error) setAppointments(data ?? [])
+      setLoading(false)
     }
 
     fetchAppointments()
   }, [user])
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-background">
+      <div className="h-screen flex items-center justify-center">
         <Spinner size="lg" />
       </div>
     )
   }
 
-  if (!user) {
-    return <LandingPage />
-  }
+  if (!user) return <LandingPage />
 
   return (
     <BrowserRouter>
@@ -88,5 +83,3 @@ const App: React.FC = () => {
     </BrowserRouter>
   )
 }
-
-export default App
