@@ -1,26 +1,22 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { blink } from '@/lib/blink'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { supabase } from '@/lib/supabase'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { 
   ArrowLeft, 
   Save, 
-  Smile, 
-  Frown, 
-  Meh, 
-  Wind, 
-  Zap,
-  ChevronRight,
-  ChevronLeft,
+  ChevronRight, 
+  ChevronLeft, 
   CheckCircle2
 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
 import { Progress } from '@/components/ui/progress'
+import { Badge } from '@/components/ui/badge'
 
 const steps = [
   { title: 'Current State', description: 'How are you feeling after your session?' },
@@ -43,27 +39,43 @@ export default function CheckInPage() {
     progress: ''
   })
 
-  useEffect(() => {
-    if (appointmentId) {
-      fetchData()
-    } else {
-      setLoading(false)
-    }
-  }, [appointmentId])
+  const [user, setUser] = useState<any>(null)
 
-  const fetchData = async () => {
-    try {
+  // Get current user
+  useEffect(() => {
+    const sessionUser = supabase.auth.user()
+    setUser(sessionUser)
+  }, [])
+
+  // Fetch appointment and reflection data
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user || !appointmentId) {
+        setLoading(false)
+        return
+      }
+
       setLoading(true)
-      const data = await blink.db.appointments.get(appointmentId!)
-      if (data) {
-        setAppointment(data)
-        
-        // Check if reflection already exists
-        const reflections = await blink.db.session_reflections.list({
-          where: { appointment_id: appointmentId! }
-        })
-        
-        if (reflections.length > 0) {
+      try {
+        // Get appointment
+        const { data: apptData, error: apptError } = await supabase
+          .from('appointments')
+          .select('*')
+          .eq('id', appointmentId)
+          .single()
+
+        if (apptError) throw apptError
+        setAppointment(apptData)
+
+        // Get session reflection
+        const { data: reflections, error: reflError } = await supabase
+          .from('session_reflections')
+          .select('*')
+          .eq('appointment_id', appointmentId)
+
+        if (reflError) throw reflError
+
+        if (reflections && reflections.length > 0) {
           const r = reflections[0]
           setFormData({
             feeling: r.feeling || '',
@@ -72,23 +84,28 @@ export default function CheckInPage() {
             progress: r.progress || ''
           })
         }
+      } catch (error) {
+        console.error('Error fetching reflection data:', error)
+        toast.error('Failed to load session data')
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error fetching reflection data:', error)
-      toast.error('Failed to load session data')
-    } finally {
-      setLoading(false)
     }
-  }
+
+    fetchData()
+  }, [user, appointmentId])
 
   const handleSave = async () => {
-    try {
-      const { user } = await blink.auth.me()
-      if (!user) return
+    if (!user) return
 
-      const existing = await blink.db.session_reflections.list({
-        where: { appointment_id: appointmentId || 'manual' }
-      })
+    setLoading(true)
+    try {
+      const { data: existing, error: existingError } = await supabase
+        .from('session_reflections')
+        .select('*')
+        .eq('appointment_id', appointmentId)
+
+      if (existingError) throw existingError
 
       const reflectionData = {
         user_id: user.id,
@@ -100,13 +117,19 @@ export default function CheckInPage() {
         created_at: new Date().toISOString()
       }
 
-      if (existing.length > 0) {
-        await blink.db.session_reflections.update(existing[0].id, reflectionData)
+      if (existing && existing.length > 0) {
+        // Update existing reflection
+        const { error: updateError } = await supabase
+          .from('session_reflections')
+          .update(reflectionData)
+          .eq('id', existing[0].id)
+        if (updateError) throw updateError
       } else {
-        await blink.db.session_reflections.create({
-          id: crypto.randomUUID(),
-          ...reflectionData
-        })
+        // Create new reflection
+        const { error: insertError } = await supabase
+          .from('session_reflections')
+          .insert([{ ...reflectionData }])
+        if (insertError) throw insertError
       }
 
       toast.success('Reflection saved successfully')
@@ -114,6 +137,8 @@ export default function CheckInPage() {
     } catch (error) {
       console.error('Error saving reflection:', error)
       toast.error('Failed to save reflection')
+    } finally {
+      setLoading(false)
     }
   }
 
