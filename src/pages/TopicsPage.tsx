@@ -10,7 +10,6 @@ import {
   CheckCircle2, 
   Circle, 
   AlertCircle,
-  Clock,
   MessageSquare
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -23,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
 
 export default function TopicsPage() {
   const [loading, setLoading] = useState(true)
@@ -127,6 +127,7 @@ export default function TopicsPage() {
         <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
       </div>
 
+      {/* Add New Topic */}
       <Card className="border-2">
         <CardContent className="pt-6">
           <form onSubmit={handleAddTopic} className="flex flex-col sm:flex-row gap-4">
@@ -157,22 +158,28 @@ export default function TopicsPage() {
         </CardContent>
       </Card>
 
+      {/* Active Topics */}
       <div className="space-y-6">
-        <div className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-            <MessageSquare className="h-4 w-4" />
-            Active Topics ({activeTopics.length})
-          </h2>
-          {activeTopics.length > 0 ? activeTopics.map((topic) => (
-            <Card key={topic.id} className="group overflow-hidden">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+          <MessageSquare className="h-4 w-4" />
+          Active Topics ({activeTopics.length})
+        </h2>
+        {activeTopics.length > 0 ? activeTopics.map((topic, index) => (
+          <motion.div
+            key={topic.id}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+          >
+            <Card className="group overflow-hidden">
               <CardContent className="p-0">
-                <div className="flex items-center px-4 py-4 gap-4">
-                  <button 
-                    onClick={() => handleToggleComplete(topic)}
-                    className="shrink-0 text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Circle className="h-6 w-6" />
-                  </button>
+                <div 
+                  onClick={() => handleToggleComplete(topic)}
+                  className="flex items-center px-4 py-4 gap-4 cursor-pointer hover:bg-muted/10 transition-colors"
+                >
+                  <div className="shrink-0">
+                    <Circle className="h-6 w-6 text-muted-foreground" />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-lg truncate">{topic.title}</p>
                     <div className="flex items-center gap-2 mt-1">
@@ -184,7 +191,7 @@ export default function TopicsPage() {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    onClick={() => handleDeleteTopic(topic.id)}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteTopic(topic.id) }} 
                     className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -192,41 +199,50 @@ export default function TopicsPage() {
                 </div>
               </CardContent>
             </Card>
-          )) : (
-            <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
-              <AlertCircle className="h-8 w-8 mx-auto mb-3 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No topics saved yet. Add something above!</p>
-            </div>
-          )}
-        </div>
+          </motion.div>
+        )) : (
+          <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
+            <AlertCircle className="h-8 w-8 mx-auto mb-3 text-muted-foreground opacity-50" />
+            <p className="text-muted-foreground">No topics saved yet. Add something above!</p>
+          </div>
+        )}
 
+        {/* Completed Topics */}
         {completedTopics.length > 0 && (
           <div className="space-y-3 pt-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4" />
               Discussed
             </h2>
-            {completedTopics.map((topic) => (
-              <div 
-                key={topic.id} 
-                className="flex items-center px-4 py-3 gap-4 bg-muted/30 rounded-xl border border-transparent group"
+            {completedTopics.map((topic, index) => (
+              <motion.div
+                key={topic.id}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
-                <button 
-                  onClick={() => handleToggleComplete(topic)}
-                  className="shrink-0 text-primary"
-                >
-                  <CheckCircle2 className="h-6 w-6" />
-                </button>
-                <p className="flex-1 text-muted-foreground line-through decoration-muted-foreground/50">{topic.title}</p>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => handleDeleteTopic(topic.id)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+                <Card className="group overflow-hidden">
+                  <CardContent className="p-0">
+                    <div 
+                      onClick={() => handleToggleComplete(topic)}
+                      className="flex items-center px-4 py-4 gap-4 cursor-pointer hover:bg-muted/10 transition-colors"
+                    >
+                      <div className="shrink-0">
+                        <CheckCircle2 className="h-6 w-6 text-primary" />
+                      </div>
+                      <p className="flex-1 text-muted-foreground line-through decoration-muted-foreground/50 truncate">{topic.title}</p>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={(e) => { e.stopPropagation(); handleDeleteTopic(topic.id) }} 
+                        className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         )}
