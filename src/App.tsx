@@ -1,3 +1,4 @@
+import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Layout } from './components/layout/Layout'
 import LandingPage from './pages/LandingPage'
@@ -10,7 +11,12 @@ import JournalPage from './pages/JournalPage'
 import ProfilePage from './pages/ProfilePage'
 import { Spinner } from './components/ui/spinner'
 
+interface AppProps {
+  isLoading?: boolean
+  isAuthenticated?: boolean
+}
 
+const App: React.FC<AppProps> = ({ isLoading = false, isAuthenticated = true }) => {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-background">
