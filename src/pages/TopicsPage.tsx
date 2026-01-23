@@ -1,17 +1,10 @@
 import { useState, useEffect } from 'react'
-import { blink } from '@/lib/blink'
+import { supabase } from '@/lib/supabaseClient'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Plus, 
-  Trash2, 
-  CheckCircle2, 
-  Circle, 
-  AlertCircle,
-  MessageSquare
-} from 'lucide-react'
+import { Plus, Trash2, CheckCircle2, Circle, AlertCircle, MessageSquare } from 'lucide-react'
 import { toast } from 'sonner'
 import { Spinner } from '@/components/ui/spinner'
 import {
@@ -22,7 +15,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from '@/lib/utils'
-import { motion } from 'framer-motion'
 
 export default function TopicsPage() {
   const [loading, setLoading] = useState(true)
@@ -37,15 +29,19 @@ export default function TopicsPage() {
   const fetchTopics = async () => {
     try {
       setLoading(true)
-      const { user } = await blink.auth.me()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
-      const data = await blink.db.topics.list({
-        where: { user_id: user.id },
-        orderBy: { created_at: 'desc' }
-      })
-      
-      setTopics(data)
+      const { data, error } = await supabase
+        .from('topics')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      setTopics(data || [])
     } catch (error) {
       console.error('Error fetching topics:', error)
       toast.error('Failed to load topics')
@@ -59,16 +55,21 @@ export default function TopicsPage() {
     if (!newTitle.trim()) return
 
     try {
-      const { user } = await blink.auth.me()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
-      await blink.db.topics.create({
-        id: crypto.randomUUID(),
-        user_id: user.id,
-        title: newTitle.trim(),
-        priority: newPriority,
-        is_completed: 0
-      })
+      const { error } = await supabase.from('topics').insert([
+        {
+          user_id: user.id,
+          title: newTitle.trim(),
+          priority: newPriority,
+          is_completed: false
+        }
+      ])
+
+      if (error) throw error
 
       setNewTitle('')
       setNewPriority('medium')
@@ -82,9 +83,12 @@ export default function TopicsPage() {
 
   const handleToggleComplete = async (topic: any) => {
     try {
-      await blink.db.topics.update(topic.id, {
-        is_completed: Number(topic.is_completed) > 0 ? 0 : 1
-      })
+      const { error } = await supabase
+        .from('topics')
+        .update({ is_completed: !topic.is_completed })
+        .eq('id', topic.id)
+
+      if (error) throw error
       fetchTopics()
     } catch (error) {
       console.error('Error updating topic:', error)
@@ -94,7 +98,8 @@ export default function TopicsPage() {
 
   const handleDeleteTopic = async (id: string) => {
     try {
-      await blink.db.topics.delete(id)
+      const { error } = await supabase.from('topics').delete().eq('id', id)
+      if (error) throw error
       toast.success('Topic removed')
       fetchTopics()
     } catch (error) {
@@ -109,8 +114,8 @@ export default function TopicsPage() {
     low: 'text-blue-500 bg-blue-50 border-blue-200',
   }
 
-  const activeTopics = topics.filter(t => Number(t.is_completed) === 0)
-  const completedTopics = topics.filter(t => Number(t.is_completed) > 0)
+  const activeTopics = topics.filter(t => !t.is_completed)
+  const completedTopics = topics.filter(t => t.is_completed)
 
   if (loading) {
     return (
@@ -127,7 +132,6 @@ export default function TopicsPage() {
         <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
       </div>
 
-      {/* Add New Topic */}
       <Card className="border-2">
         <CardContent className="pt-6">
           <form onSubmit={handleAddTopic} className="flex flex-col sm:flex-row gap-4">
@@ -158,28 +162,22 @@ export default function TopicsPage() {
         </CardContent>
       </Card>
 
-      {/* Active Topics */}
       <div className="space-y-6">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-          <MessageSquare className="h-4 w-4" />
-          Active Topics ({activeTopics.length})
-        </h2>
-        {activeTopics.length > 0 ? activeTopics.map((topic, index) => (
-          <motion.div
-            key={topic.id}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-          >
-            <Card className="group overflow-hidden">
+        <div className="space-y-3">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+            <MessageSquare className="h-4 w-4" />
+            Active Topics ({activeTopics.length})
+          </h2>
+          {activeTopics.length > 0 ? activeTopics.map((topic) => (
+            <Card key={topic.id} className="group overflow-hidden">
               <CardContent className="p-0">
-                <div 
-                  onClick={() => handleToggleComplete(topic)}
-                  className="flex items-center px-4 py-4 gap-4 cursor-pointer hover:bg-muted/10 transition-colors"
-                >
-                  <div className="shrink-0">
-                    <Circle className="h-6 w-6 text-muted-foreground" />
-                  </div>
+                <div className="flex items-center px-4 py-4 gap-4">
+                  <button 
+                    onClick={() => handleToggleComplete(topic)}
+                    className="shrink-0 text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Circle className="h-6 w-6" />
+                  </button>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-lg truncate">{topic.title}</p>
                     <div className="flex items-center gap-2 mt-1">
@@ -191,7 +189,7 @@ export default function TopicsPage() {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    onClick={(e) => { e.stopPropagation(); handleDeleteTopic(topic.id) }} 
+                    onClick={() => handleDeleteTopic(topic.id)}
                     className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -199,50 +197,41 @@ export default function TopicsPage() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
-        )) : (
-          <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
-            <AlertCircle className="h-8 w-8 mx-auto mb-3 text-muted-foreground opacity-50" />
-            <p className="text-muted-foreground">No topics saved yet. Add something above!</p>
-          </div>
-        )}
+          )) : (
+            <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
+              <AlertCircle className="h-8 w-8 mx-auto mb-3 text-muted-foreground opacity-50" />
+              <p className="text-muted-foreground">No topics saved yet. Add something above!</p>
+            </div>
+          )}
+        </div>
 
-        {/* Completed Topics */}
         {completedTopics.length > 0 && (
           <div className="space-y-3 pt-4">
             <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4" />
               Discussed
             </h2>
-            {completedTopics.map((topic, index) => (
-              <motion.div
-                key={topic.id}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+            {completedTopics.map((topic) => (
+              <div 
+                key={topic.id} 
+                className="flex items-center px-4 py-3 gap-4 bg-muted/30 rounded-xl border border-transparent group"
               >
-                <Card className="group overflow-hidden">
-                  <CardContent className="p-0">
-                    <div 
-                      onClick={() => handleToggleComplete(topic)}
-                      className="flex items-center px-4 py-4 gap-4 cursor-pointer hover:bg-muted/10 transition-colors"
-                    >
-                      <div className="shrink-0">
-                        <CheckCircle2 className="h-6 w-6 text-primary" />
-                      </div>
-                      <p className="flex-1 text-muted-foreground line-through decoration-muted-foreground/50 truncate">{topic.title}</p>
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        onClick={(e) => { e.stopPropagation(); handleDeleteTopic(topic.id) }} 
-                        className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <button 
+                  onClick={() => handleToggleComplete(topic)}
+                  className="shrink-0 text-primary"
+                >
+                  <CheckCircle2 className="h-6 w-6" />
+                </button>
+                <p className="flex-1 text-muted-foreground line-through decoration-muted-foreground/50">{topic.title}</p>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => handleDeleteTopic(topic.id)}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             ))}
           </div>
         )}
