@@ -4,27 +4,26 @@ import { supabase } from '@/lib/supabase'
 
 export default function LandingPage() {
   const handleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: window.location.origin, // redirects back to your app after login
-      },
     })
-    if (error) console.error('Login error:', error)
+    if (error) {
+      console.error('Login error:', error.message)
+      return
+    }
+    // Supabase handles redirect automatically
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <header className="container flex h-20 items-center justify-between">
         <div className="flex items-center space-x-2">
           <span className="text-xl font-bold tracking-tight">Therapy Pathways</span>
         </div>
-        <Button variant="ghost" onClick={handleLogin}>
-          Log in
-        </Button>
+        <Button variant="ghost" onClick={handleLogin}>Log in with Google</Button>
       </header>
 
-      <main>
+      <main className="flex-1">
         <section className="container py-20 md:py-32 flex flex-col items-center text-center space-y-8 animate-fade-in">
           <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-muted/50">
             <span className="flex h-2 w-2 rounded-full bg-primary mr-2" />
@@ -47,42 +46,19 @@ export default function LandingPage() {
         </section>
 
         <section className="container py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="p-6 rounded-2xl border bg-card space-y-4">
-            <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center">
-              <Shield className="h-6 w-6" />
+          {[{icon: Shield, title: "Private & Secure", desc: "Your data is encrypted and secure. Your reflections are for your eyes only."},
+            {icon: Heart, title: "Mood Tracking", desc: "Check in with yourself daily to see patterns in your emotional well-being."},
+            {icon: Sparkles, title: "Guided Reflection", desc: "Structure your post-session thoughts with guided prompts for deeper insights."},
+            {icon: TrendingUp, title: "Goal Progress", desc: "Visualize your growth with goal tracking and celebrate your achievements."}
+          ].map((item, i) => (
+            <div key={i} className="p-6 rounded-2xl border bg-card space-y-4">
+              <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center">
+                <item.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-semibold text-lg">{item.title}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
             </div>
-            <h3 className="font-semibold text-lg">Private & Secure</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Your data is encrypted and secure. Your reflections are for your eyes only.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl border bg-card space-y-4">
-            <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center">
-              <Heart className="h-6 w-6" />
-            </div>
-            <h3 className="font-semibold text-lg">Mood Tracking</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Check in with yourself daily to see patterns in your emotional well-being.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl border bg-card space-y-4">
-            <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center">
-              <Sparkles className="h-6 w-6" />
-            </div>
-            <h3 className="font-semibold text-lg">Guided Reflection</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Structure your post-session thoughts with guided prompts for deeper insights.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl border bg-card space-y-4">
-            <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center">
-              <TrendingUp className="h-6 w-6" />
-            </div>
-            <h3 className="font-semibold text-lg">Goal Progress</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Visualize your growth with goal tracking and celebrate your achievements.
-            </p>
-          </div>
+          ))}
         </section>
       </main>
 
