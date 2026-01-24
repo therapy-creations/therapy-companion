@@ -17,26 +17,23 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [appointments, setAppointments] = useState<any[]>([])
 
-  // ✅ Load session on startup
+  // Load session on startup
   useEffect(() => {
-    const loadUser = async () => {
-      const { data } = await supabase.auth.getUser()
-      setUser(data.user ?? null)
+    const loadSession = async () => {
+      const { data } = await supabase.auth.getSession()
+      setUser(data.session?.user ?? null)
       setLoading(false)
     }
+    loadSession()
 
-    loadUser()
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
 
     return () => subscription.unsubscribe()
   }, [])
 
-  // ✅ Fetch appointments
+  // Fetch appointments when user logs in
   useEffect(() => {
     if (!user) return
 
