@@ -4,10 +4,13 @@ import { supabase } from '@/lib/supabase'
 
 export default function LandingPage() {
   const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google'
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin, // redirects back to your app after login
+      },
     })
-    if (error) console.error(error)
+    if (error) console.error('Login error:', error)
   }
 
   return (
@@ -16,7 +19,9 @@ export default function LandingPage() {
         <div className="flex items-center space-x-2">
           <span className="text-xl font-bold tracking-tight">Therapy Pathways</span>
         </div>
-        <Button variant="ghost" onClick={handleLogin}>Log in</Button>
+        <Button variant="ghost" onClick={handleLogin}>
+          Log in
+        </Button>
       </header>
 
       <main>
