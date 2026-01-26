@@ -117,11 +117,8 @@ export default function TopicsPage() {
   const activeTopics = topics.filter(t => !t.is_completed)
   const completedTopics = topics.filter(t => t.is_completed)
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <Loader size="lg" />
-      </div>
+   // Show loader while loading
+  if (loading) return <Loader />
     )
   }
 
