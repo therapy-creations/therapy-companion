@@ -6,90 +6,57 @@
 
 @layer base {
   :root {
-    /* =========================
-       BRAND COLORS
-    ========================= */
-    --brand-soft: 226 65.8% 85.1%;
-    --brand-primary: 225 40% 18%;
-    --brand-primary-hover: 225 40% 22%;
-
-    --gradient-start: 226 65.8% 85.1%;
-    --gradient-middle: 226 55% 75%;
-    --gradient-end: 225 40% 18%;
-
-    --background: 0 0% 100%;
-    --foreground: 225 20% 15%;
-
+    /* Light & airy theme */
+    --background: 210 70% 95%;
+    --foreground: 210 20% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 225 20% 15%;
-
+    --card-foreground: 210 20% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 225 20% 15%;
-
-    --primary: var(--brand-primary);
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 226 40% 92%;
-    --secondary-foreground: 225 30% 20%;
-
-    --muted: 226 35% 95%;
-    --muted-foreground: 225 15% 45%;
-
-    --accent: 226 45% 88%;
-    --accent-foreground: 225 30% 20%;
-
+    --popover-foreground: 210 20% 20%;
+    --primary: 210 60% 80%;
+    --primary-foreground: 210 10% 10%;
+    --secondary: 210 50% 90%;
+    --secondary-foreground: 210 20% 20%;
+    --muted: 210 50% 90%;
+    --muted-foreground: 210 10% 40%;
+    --accent: 300 80% 85%;
+    --accent-foreground: 210 10% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+    --border: 210 50% 80%;
+    --input: 210 50% 90%;
+    --ring: 210 50% 80%;
 
-    --border: 226 25% 85%;
-    --input: 226 25% 85%;
-    --ring: 226 65.8% 85.1%;
-
+    /* Fonts */
     --font-sans: 'Geist', sans-serif;
     --font-mono: 'Geist Mono', monospace;
 
-    --radius: 1rem;
+    /* Shadows */
+    --shadow-sm: 0px 4px 6px -1px hsl(0 0% 0% / 0.1), 0px 2px 4px -2px hsl(0 0% 0% / 0.1);
+    --shadow-md: 0px 10px 15px -3px hsl(0 0% 0% / 0.1), 0px 4px 6px -4px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0px 25px 50px -12px hsl(0 0% 0% / 0.15);
 
-    /* SHADOWS */
-    --shadow-xs: 0 1px 2px hsl(225 20% 20% / 0.04);
-    --shadow-sm: 0 2px 8px hsl(225 20% 20% / 0.06);
-    --shadow: 0 10px 25px hsl(225 20% 20% / 0.08);
-    --shadow-md: 0 16px 40px hsl(225 20% 20% / 0.12);
-    --shadow-lg: 0 30px 60px hsl(225 20% 20% / 0.16);
+    /* Misc */
+    --tracking-normal: 0em;
+    --spacing: 0.25rem;
+    --radius: 0.75rem;
   }
 
-  /* =========================
-     DARK MODE
-  ========================= */
   .dark {
-    --background: 225 25% 8%;
-    --foreground: 0 0% 98%;
-
-    --card: 225 25% 10%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 225 25% 10%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 226 65.8% 85.1%;
-    --primary-foreground: 225 40% 18%;
-
-    --secondary: 225 20% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 225 20% 15%;
-    --muted-foreground: 225 10% 65%;
-
-    --accent: 225 20% 18%;
-    --accent-foreground: 0 0% 98%;
-
-    --border: 225 20% 18%;
-    --input: 225 20% 18%;
-    --ring: 226 65.8% 85.1%;
-
-    --gradient-start: 226 30% 22%;
-    --gradient-middle: 226 35% 18%;
-    --gradient-end: 225 40% 12%;
+    --background: 210 20% 10%;
+    --foreground: 210 50% 95%;
+    --card: 210 20% 15%;
+    --card-foreground: 210 50% 95%;
+    --primary: 300 60% 80%;
+    --primary-foreground: 210 50% 10%;
+    --secondary: 210 10% 20%;
+    --secondary-foreground: 210 50% 95%;
+    --muted: 210 10% 20%;
+    --muted-foreground: 210 30% 70%;
+    --accent: 300 60% 80%;
+    --accent-foreground: 210 50% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
   }
 
   * {
@@ -99,73 +66,52 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
-    line-height: 1.6;
+    letter-spacing: var(--tracking-normal);
   }
+}
 
-  /* =========================
-     RESPONSIVE TYPOGRAPHY
-  ========================= */
-  html {
-    font-size: 16px;
-  }
-  @media (max-width: 1280px) { html { font-size: 15px; } }
-  @media (max-width: 1024px) { html { font-size: 14px; } }
-  @media (max-width: 768px) { html { font-size: 13px; } }
-  @media (max-width: 480px) { html { font-size: 12px; } }
+/* Landing page gradient background */
+.landing-background {
+  background: linear-gradient(135deg, hsl(210, 70%, 95%), hsl(300, 80%, 85%));
+  min-height: 100vh;
+}
 
-  h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
-  h2 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
-  h3 { font-size: clamp(1.25rem, 3vw, 2rem); }
-  h4 { font-size: clamp(1rem, 2.5vw, 1.5rem); }
+/* Subtle glow animation for headings/hero */
+@keyframes glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.05); }
+}
 
-  p { font-size: clamp(0.875rem, 2vw, 1rem); }
+.landing-glow {
+  animation: glow 3s ease-in-out infinite;
+}
 
-  /* =========================
-     GRADIENT UTILITIES
-  ========================= */
-  .bg-landing-gradient {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--gradient-start)),
-      hsl(var(--gradient-middle)),
-      hsl(var(--gradient-end))
-    );
-  }
+/* Fade-in animation for sections */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
 
-  /* =========================
-     GLASS CARDS
-  ========================= */
-  .glass {
-    @apply backdrop-blur-lg border border-white/30;
-    background-color: hsl(var(--brand-soft) / 0.65);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-  .dark .glass {
-    background-color: hsl(225 20% 12% / 0.7);
-    border-color: hsl(225 20% 30% / 0.3);
-  }
+/* Glass effect for cards/modals */
+.glass {
+  @apply backdrop-blur-md bg-white/70 border border-white/20;
+}
 
-  /* =========================
-     ANIMATIONS
-  ========================= */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-out both;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.dark .glass {
+  @apply bg-black/70 border-white/10;
+}
 
-  /* =========================
-     DARK MODE TOGGLE
-  ========================= */
-  .dark-toggle {
-    cursor: pointer;
-    @apply p-2 rounded-full bg-muted text-muted-foreground shadow-sm;
-  }
-  .dark .dark-toggle {
-    @apply bg-muted-foreground text-muted;
-  }
+/* Responsive text scaling */
+h1 {
+  @apply text-4xl md:text-5xl lg:text-6xl;
+}
+h2 {
+  @apply text-2xl md:text-3xl;
+}
+p {
+  @apply text-base md:text-lg;
 }
