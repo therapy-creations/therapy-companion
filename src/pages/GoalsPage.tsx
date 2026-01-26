@@ -70,7 +70,7 @@ export default function GoalsPage() {
     }
   }
 
-  if (loading) return <Spinner size="lg" className="mx-auto mt-20" />
+  if (loading) return <Loader size="lg" className="mx-auto mt-20" />
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
