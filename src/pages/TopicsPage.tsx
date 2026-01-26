@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Trash2, CheckCircle2, Circle, AlertCircle, MessageSquare } from 'lucide-react'
 import { toast } from 'sonner'
-import { Spinner } from '@/components/ui/spinner'
+import { Loader } from '@/components/ui/Loader'
 import {
   Select,
   SelectContent,
