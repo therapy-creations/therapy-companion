@@ -158,11 +158,8 @@ export default function ProfilePage() {
     supabase.auth.signOut()
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <Loader size="lg" />
-      </div>
+   // Show loader while loading
+  if (loading) return <Loader />
     )
   }
 
