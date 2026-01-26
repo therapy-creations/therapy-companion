@@ -84,11 +84,8 @@ export default function HomePage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader size="lg" />
-      </div>
+   // Show loader while loading
+  if (loading) return <Loader />
     )
   }
 
