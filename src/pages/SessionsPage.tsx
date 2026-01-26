@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Calendar as CalendarIcon, Plus, CheckCircle2, Clock, MoreVertical, ChevronRight, Trash2 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { toast } from 'sonner'
-import { Spinner } from '@/components/ui/spinner'
+import { Loader } from '@/components/ui/Loader'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
