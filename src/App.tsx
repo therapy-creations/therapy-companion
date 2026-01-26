@@ -58,7 +58,7 @@ export default function App() {
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <Spinner size="lg" />
+        <Loader size="lg" />
       </div>
     )
   }
