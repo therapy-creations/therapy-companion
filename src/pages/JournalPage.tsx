@@ -55,7 +55,8 @@ export default function JournalPage() {
     }
   }
 
-  if (loading) return <Loader size="lg" className="mx-auto mt-20" />
+   // Show loader while loading
+  if (loading) return <Loader />
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
