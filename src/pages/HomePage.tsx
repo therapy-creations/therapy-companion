@@ -1,196 +1,115 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '@/lib/supabase'
-import { toast } from 'sonner'
-import { Spinner } from '@/components/ui/spinner'
+import { useState } from 'react'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { format, parseISO } from 'date-fns'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { toast } from 'sonner'
+import { supabase } from '@/lib/supabase'
 
 export default function HomePage() {
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
-  const [checkIn, setCheckIn] = useState<any>(null)
-
-  // Daily check-in state
   const [mood, setMood] = useState('')
   const [focus, setFocus] = useState('')
-  const [energy, setEnergy] = useState(5)
-  const [stress, setStress] = useState(5)
-  const [notes, setNotes] = useState('')
-  const [saving, setSaving] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-      setUser(user)
-
-      // Fetch today's check-in
-      const today = new Date().toISOString().split('T')[0]
-      const { data } = await supabase
-        .from('daily_checkins')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('date', today)
-        .single()
-      
-      if (data) {
-        setCheckIn(data)
-        setMood(data.mood)
-        setFocus(data.focus)
-        setEnergy(data.energy)
-        setStress(data.stress)
-        setNotes(data.notes ?? '')
-      }
-
-      setLoading(false)
-    }
-
-    loadUser()
-  }, [])
-
-  const handleSubmit = async () => {
+  const handleDailyCheckIn = async () => {
     if (!mood || !focus) {
-      toast.error('Please fill out mood and focus')
+      toast.error('Please enter your mood and focus for today')
       return
     }
 
+    setSubmitting(true)
     try {
-      setSaving(true)
-      const today = new Date().toISOString().split('T')[0]
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('User not found')
 
-      const payload = {
-        user_id: user.id,
-        date: today,
-        mood,
-        focus,
-        energy,
-        stress,
-        notes
-      }
+      const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD
 
-      if (checkIn) {
-        // Update existing
-        const { error } = await supabase
-          .from('daily_checkins')
-          .update(payload)
-          .eq('id', checkIn.id)
-        if (error) throw error
-        toast.success('Check-in updated!')
-      } else {
-        // Insert new
-        const { error } = await supabase
-          .from('daily_checkins')
-          .insert([payload])
-        if (error) throw error
-        toast.success('Daily check-in saved!')
-        setCheckIn(payload)
-      }
-    } catch (err) {
-      console.error(err)
+      const { error } = await supabase.from('daily_checkins').upsert([
+        {
+          user_id: user.id,
+          date: today,
+          mood,
+          focus
+        }
+      ], { onConflict: ['user_id', 'date'] })
+
+      if (error) throw error
+
+      toast.success('Daily check-in saved!')
+      setMood('')
+      setFocus('')
+    } catch (error) {
+      console.error(error)
       toast.error('Failed to save check-in')
     } finally {
-      setSaving(false)
+      setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Spinner size="lg" />
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-[#dbeafe] via-[#e0f2fe] to-[#f0f9ff] animate-fade-in">
-      <div className="max-w-3xl mx-auto space-y-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-blue-900">Welcome back, {user?.email}</h1>
-        <p className="text-center text-blue-800">Your companion for in-between sessions. Track your mood, focus, and energy daily.</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col space-y-12">
+      
+      <header className="flex justify-between items-center mb-12">
+        <span className="text-2xl md:text-3xl font-bold text-primary-foreground">Therapy Pathways</span>
+      </header>
 
-        {/* Daily Check-In Card */}
-        <div className="bg-white/70 dark:bg-blue-900/40 backdrop-blur-md rounded-3xl p-6 shadow-lg space-y-4">
-          <h2 className="text-2xl font-semibold text-blue-900 dark:text-white">Daily Check-In</h2>
+      <main className="flex-1 flex flex-col items-center space-y-12 text-center">
 
-          <div>
-            <label className="block text-sm font-medium text-blue-800 dark:text-blue-200">Mood</label>
-            <select
-              value={mood}
-              onChange={e => setMood(e.target.value)}
-              className="mt-1 w-full border rounded-lg p-2 bg-white dark:bg-blue-800 text-blue-900 dark:text-white"
-            >
-              <option value="">Select mood</option>
-              <option value="happy">😃 Happy</option>
-              <option value="content">🙂 Content</option>
-              <option value="neutral">😐 Neutral</option>
-              <option value="sad">😟 Sad</option>
-              <option value="angry">😠 Angry</option>
-            </select>
-          </div>
+        {/* Welcome Section */}
+        <section className="max-w-3xl space-y-4 animate-fade-in">
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
+            Welcome Back
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Your companion for therapy, reflection, and daily progress tracking.
+          </p>
+        </section>
 
-          <div>
-            <label className="block text-sm font-medium text-blue-800 dark:text-blue-200">Focus / Intention</label>
-            <input
-              type="text"
-              value={focus}
-              onChange={e => setFocus(e.target.value)}
-              placeholder="What are you focusing on today?"
-              className="mt-1 w-full border rounded-lg p-2 bg-white dark:bg-blue-800 text-blue-900 dark:text-white"
-            />
-          </div>
+        {/* Daily Check-In */}
+        <section className="w-full max-w-md animate-fade-in">
+          <Card className="p-6 bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md space-y-4">
+            <h2 className="text-xl font-semibold text-primary-foreground">Daily Check-In</h2>
 
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-blue-800 dark:text-blue-200">Energy</label>
-              <input
-                type="range"
-                min={0}
-                max={10}
-                value={energy}
-                onChange={e => setEnergy(Number(e.target.value))}
+            <div className="space-y-3">
+              <div>
+                <Label htmlFor="mood">Mood</Label>
+                <Input
+                  id="mood"
+                  placeholder="How are you feeling today?"
+                  value={mood}
+                  onChange={e => setMood(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="focus">Focus</Label>
+                <Input
+                  id="focus"
+                  placeholder="What are you focusing on today?"
+                  value={focus}
+                  onChange={e => setFocus(e.target.value)}
+                />
+              </div>
+
+              <Button
                 className="w-full"
-              />
-              <div className="text-xs text-blue-700 dark:text-blue-300 text-right">{energy}/10</div>
+                onClick={handleDailyCheckIn}
+                disabled={submitting}
+              >
+                {submitting ? 'Saving...' : 'Save Check-In'}
+              </Button>
             </div>
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-blue-800 dark:text-blue-200">Stress</label>
-              <input
-                type="range"
-                min={0}
-                max={10}
-                value={stress}
-                onChange={e => setStress(Number(e.target.value))}
-                className="w-full"
-              />
-              <div className="text-xs text-blue-700 dark:text-blue-300 text-right">{stress}/10</div>
-            </div>
-          </div>
+          </Card>
+        </section>
 
-          <div>
-            <label className="block text-sm font-medium text-blue-800 dark:text-blue-200">Notes (Optional)</label>
-            <textarea
-              value={notes}
-              onChange={e => setNotes(e.target.value)}
-              placeholder="Reflections or thoughts..."
-              className="mt-1 w-full border rounded-lg p-2 bg-white dark:bg-blue-800 text-blue-900 dark:text-white"
-            />
-          </div>
-
-          <Button onClick={handleSubmit} disabled={saving}>
-            {saving ? 'Saving...' : checkIn ? 'Update Check-In' : 'Submit Check-In'}
-          </Button>
-        </div>
-
-        {/* Optional: Add recent check-ins, progress, or tips */}
-        {checkIn && (
-          <div className="bg-white/50 dark:bg-blue-900/40 backdrop-blur-md rounded-3xl p-4 shadow-md text-blue-900 dark:text-white space-y-2">
-            <h3 className="font-semibold text-lg">Your Check-In Today</h3>
-            <p>Mood: {checkIn.mood}</p>
-            <p>Focus: {checkIn.focus}</p>
-            <p>Energy: {checkIn.energy}/10 | Stress: {checkIn.stress}/10</p>
-            {checkIn.notes && <p>Notes: {checkIn.notes}</p>}
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+        {/* Highlights / Features */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
+          {[
+            { title: "Private & Secure", desc: "Your reflections are encrypted and only visible to you." },
+            { title: "Mood Tracking", desc: "Daily check-ins help you notice patterns in your well-being." },
+            { title: "Guided Reflection", desc: "Structured prompts make post-session insights easy." },
+            { title: "Goal Progress", desc: "Celebrate small wins and track your growth." }
+          ].map((item, i) => (
+            <Card
+              key={i}
+              className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow
