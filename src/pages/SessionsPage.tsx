@@ -117,11 +117,8 @@ export default function SessionsPage() {
   const upcomingSessions = appointments.filter(a => a.status === 'scheduled')
   const pastSessions = appointments.filter(a => a.status !== 'scheduled')
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <Loader size="lg" />
-      </div>
+   // Show loader while loading
+  if (loading) return <Loader />
     )
   }
 
