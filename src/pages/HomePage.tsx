@@ -87,7 +87,7 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Spinner size="lg" />
+        <Loader size="lg" />
       </div>
     )
   }
