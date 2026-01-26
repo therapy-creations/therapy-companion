@@ -10,7 +10,7 @@ import TopicsPage from './pages/TopicsPage'
 import GoalsPage from './pages/GoalsPage'
 import JournalPage from './pages/JournalPage'
 import ProfilePage from './pages/ProfilePage'
-import { Spinner } from './components/ui/spinner'
+import { Loader } from './components/ui/Loader'
 import { supabase } from './lib/supabase'
 
 export default function App() {
