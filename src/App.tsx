@@ -55,9 +55,8 @@ export default function App() {
     fetchAppointments()
   }, [user])
 
-      if (loading) return <Loader />;
-    )
-  }
+  // Show loader while loading
+  if (loading) return <Loader />
 
   return (
     <BrowserRouter>
