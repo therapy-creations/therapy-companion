@@ -7,94 +7,56 @@ export default function LandingPage() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-    })
-    if (error) {
-      console.error('Login error:', error.message)
-      return
-    }
-    // Supabase handles redirect automatically
-  }
-
-  const handleLearnMore = () => {
-    navigate('/learn-more')
+    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' })
+    if (error) return console.error('Login error:', error.message)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#cce7ff] via-[#e0f7ff] to-[#f0f9ff] flex flex-col">
-      <header className="container flex h-20 items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <span className="text-xl font-bold tracking-tight text-blue-800">Therapy Pathways</span>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="ghost" onClick={handleLogin}>
-            Log in with Google
-          </Button>
-          <Button variant="outline" onClick={handleLearnMore}>
-            Learn More
-          </Button>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col">
+      
+      <header className="flex items-center justify-between mb-12">
+        <span className="text-2xl md:text-3xl font-bold text-primary-foreground">Therapy Pathways</span>
+        <div className="flex gap-4">
+          <Button variant="ghost" onClick={handleLogin}>Log in</Button>
+          <Button variant="outline" onClick={() => navigate('/learn-more')}>Learn More</Button>
         </div>
       </header>
 
-      <main className="flex-1">
-        <section className="container py-20 md:py-32 flex flex-col items-center text-center space-y-8 animate-fade-in">
-          <div className="inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium bg-white/50 backdrop-blur-sm shadow-sm">
-            <span className="flex h-2 w-2 rounded-full bg-blue-400 mr-2" />
-            Your essential therapy companion
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter max-w-[800px] leading-tight text-blue-900 drop-shadow-sm">
-            The companion your therapy journey deserves.
+      <main className="flex-1 flex flex-col items-center space-y-12 text-center">
+        <section className="max-w-3xl space-y-4 animate-fade-in">
+          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
+            Your Therapy Companion
           </h1>
-          <p className="text-xl text-blue-800 max-w-[600px]">
-            Track progress, log reflections, and organize your thoughts between sessions. Empowering you to get the most out of every conversation.
+          <p className="text-lg text-muted-foreground">
+            Track your progress, check in daily, and get the most out of your therapy journey.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button size="lg" className="h-12 px-8 text-base" onClick={handleLogin}>
-              Start your journey
-            </Button>
-            <Button size="lg" variant="outline" className="h-12 px-8 text-base" onClick={handleLearnMore}>
-              Learn More
-            </Button>
-          </div>
         </section>
 
-        <section className="container py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-6xl">
           {[
-            {
-              icon: Shield,
-              title: 'Private & Secure',
-              desc: 'Your reflections and progress are stored securely, for your eyes only.'
-            },
-            {
-              icon: Heart,
-              title: 'Mood Tracking',
-              desc: 'Check in with yourself daily to observe patterns and support your emotional growth.'
-            },
-            {
-              icon: Sparkles,
-              title: 'Guided Reflection',
-              desc: 'Structured prompts help you process sessions deeply and effectively.'
-            },
-            {
-              icon: TrendingUp,
-              title: 'Goal Progress',
-              desc: 'Visualize your growth, celebrate achievements, and stay motivated.'
-            }
+            { icon: Shield, title: "Private & Secure", desc: "Your reflections and progress are stored securely, for your eyes only." },
+            { icon: Heart, title: "Mood Tracking", desc: "Daily check-ins help you notice patterns in your well-being." },
+            { icon: Sparkles, title: "Guided Reflection", desc: "Structured prompts make post-session insights easy." },
+            { icon: TrendingUp, title: "Goal Progress", desc: "Celebrate small wins and track your growth." }
           ].map((item, i) => (
-            <div key={i} className="p-6 rounded-2xl border bg-white/40 backdrop-blur-sm shadow-md space-y-4">
-              <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <item.icon className="h-6 w-6 text-blue-600" />
+            <div key={i} className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md space-y-4">
+              <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-primary/20">
+                <item.icon className="h-6 w-6 text-primary-foreground" />
               </div>
-              <h3 className="font-semibold text-lg text-blue-900">{item.title}</h3>
-              <p className="text-sm text-blue-800 leading-relaxed">{item.desc}</p>
+              <h3 className="font-semibold text-lg">{item.title}</h3>
+              <p className="text-sm text-muted-foreground">{item.desc}</p>
             </div>
           ))}
         </section>
+
+        <section className="space-y-4">
+          <Button size="lg" className="h-12 px-8 text-base" onClick={handleLogin}>Start Your Journey</Button>
+          <Button size="lg" variant="outline" className="h-12 px-8 text-base" onClick={() => navigate('/learn-more')}>Learn More</Button>
+        </section>
       </main>
 
-      <footer className="container py-12 border-t text-center text-sm text-blue-800">
-        <p>&copy; {new Date().getFullYear()} Therapy Pathways. All rights reserved.</p>
+      <footer className="mt-auto text-center text-sm text-muted-foreground">
+        &copy; {new Date().getFullYear()} Therapy Pathways. All rights reserved.
       </footer>
     </div>
   )
