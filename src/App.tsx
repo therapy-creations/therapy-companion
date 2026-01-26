@@ -55,11 +55,7 @@ export default function App() {
     fetchAppointments()
   }, [user])
 
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        <Loader size="lg" />
-      </div>
+      if (loading) return <Loader />;
     )
   }
 
