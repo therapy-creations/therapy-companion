@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Shield, Heart, Camera, Settings, LogOut, Calendar, MessageSquare, Target } from 'lucide-react'
 import { toast } from 'sonner'
-import { Spinner } from '@/components/ui/spinner'
+import { Loader } from '@/components/ui/Loader'
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
