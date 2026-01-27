@@ -27,7 +27,7 @@ export default function LearnMorePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background py-12 px-6 md:px-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 py-12 px-6 md:px-12">
       <header className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Your Therapy Companion</h1>
         <p className="text-xl text-muted-foreground">
