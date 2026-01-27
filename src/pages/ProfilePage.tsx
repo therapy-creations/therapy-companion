@@ -160,9 +160,7 @@ export default function ProfilePage() {
 
    // Show loader while loading
   if (loading) return <Loader />
-    )
-  }
-
+  
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
