@@ -119,8 +119,6 @@ export default function TopicsPage() {
 
    // Show loader while loading
   if (loading) return <Loader />
-    )
-  }
 
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
