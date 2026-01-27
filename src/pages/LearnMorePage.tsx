@@ -31,7 +31,7 @@ export default function LearnMorePage() {
       <header className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Your Therapy Companion</h1>
         <p className="text-xl text-muted-foreground">
-          Designed by a therapist, this Therapy Pathways is meant to be your companion to therapy, supporting you between sessions, helping you track, reflect, and grown at your own pace. 
+          Designed by a therapist, this Therapy Pathways is meant to be your companion to therapy, supporting you between sessions, helping you track, reflect, and grow at your own pace. 
         </p>
       </header>
 
