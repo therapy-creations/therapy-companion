@@ -119,8 +119,6 @@ export default function SessionsPage() {
 
    // Show loader while loading
   if (loading) return <Loader />
-    )
-  }
 
   return (
     <div className="space-y-8 animate-fade-in">
