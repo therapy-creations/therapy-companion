@@ -84,19 +84,19 @@ export default function HomePage() {
     }
   }
 
-   // Show loader while loading
+  // Show loader while loading
   if (loading) return <Loader />
-    )
-  }
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-12 space-y-12 landing-gradient animate-fade-in">
-      <h1 className="text-4xl md:text-5xl font-bold text-center text-foreground mb-8">
-        Welcome to your Therapy Companion
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col space-y-12">
+      <header>
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-primary-foreground mb-8">
+          Welcome to your Therapy Companion
+        </h1>
+      </header>
 
       {/* Daily Check-In Card */}
-      <Card className="max-w-xl mx-auto glass p-6 shadow-md">
+      <Card className="max-w-xl mx-auto glass p-6 rounded-2xl shadow-md backdrop-blur-md">
         <CardHeader>
           <CardTitle className="text-2xl">Daily Check-In</CardTitle>
           <CardDescription>
@@ -112,7 +112,9 @@ export default function HomePage() {
               <p>
                 <span className="font-semibold">Focus:</span> {checkIn.focus}
               </p>
-              <p className="text-sm text-muted-foreground italic">You’ve already checked in today.</p>
+              <p className="text-sm text-muted-foreground italic">
+                You’ve already checked in today.
+              </p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -142,31 +144,33 @@ export default function HomePage() {
         </CardContent>
       </Card>
 
-      {/* Optional: Add other home page content here, styled similarly to landing page */}
-      <div className="max-w-4xl mx-auto space-y-8">
-        <Card className="glass p-6 shadow-lg">
-          <CardHeader>
-            <CardTitle>Quick Links</CardTitle>
-            <CardDescription>
-              Navigate to your sessions, journal, goals, and topics.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col sm:flex-row gap-4 mt-4">
-            <Button asChild>
-              <a href="/sessions">Sessions</a>
-            </Button>
-            <Button asChild>
-              <a href="/journal">Journal</a>
-            </Button>
-            <Button asChild>
-              <a href="/goals">Goals</a>
-            </Button>
-            <Button asChild>
-              <a href="/topics">Topics</a>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Quick Links Section */}
+      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+        {[
+          { href: '/sessions', title: 'Sessions' },
+          { href: '/journal', title: 'Journal' },
+          { href: '/goals', title: 'Goals' },
+          { href: '/topics', title: 'Topics' },
+        ].map((link, index) => (
+          <Card key={index} className="p-6 rounded-2xl shadow-md glass space-y-4 text-center">
+            <CardHeader>
+              <CardTitle>{link.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button asChild>
+                <a href={link.href} className="text-primary-foreground">
+                  Go to {link.title}
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto text-center text-sm text-muted-foreground">
+        &copy; {new Date().getFullYear()} Therapy Pathways. All rights reserved.
+      </footer>
     </div>
   )
 }
