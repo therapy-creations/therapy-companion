@@ -8,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Shield, Heart, Camera, Settings, LogOut, Calendar, MessageSquare, Target } from 'lucide-react'
 import { toast } from 'sonner'
 import { Loader } from '@/components/ui/Loader'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
@@ -165,10 +166,13 @@ export default function ProfilePage() {
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
-        <Button variant="outline" size="sm" onClick={handleLogout} className="text-destructive border-destructive/20 hover:bg-destructive/10">
-          <LogOut className="h-4 w-4 mr-2" />
-          Log out
-        </Button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Button variant="outline" size="sm" onClick={handleLogout} className="text-destructive border-destructive/20 hover:bg-destructive/10">
+            <LogOut className="h-4 w-4 mr-2" />
+            Log out
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
