@@ -55,13 +55,16 @@ export default function CheckInPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <Card>
-        <CardHeader>
-          <CardTitle>{session?.status === 'completed' ? 'Reflection' : 'Prepare for Session'}</CardTitle>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+        {session?.status === 'completed' ? 'Session Reflection' : 'Prepare for Session'}
+      </h1>
+      <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardHeader className="p-6 pb-4">
+          <CardTitle className="text-2xl font-bold">Notes & Focus Points</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="px-6 pb-6 space-y-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="notes" className="font-medium">Notes / Focus Points</label>
+            <label htmlFor="notes" className="font-medium text-foreground">What would you like to focus on?</label>
             <Input
               id="notes"
               value={notes}
@@ -70,7 +73,7 @@ export default function CheckInPage() {
               as="textarea"
             />
           </div>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={handleSave} className="h-12 px-8 text-base">Save</Button>
         </CardContent>
       </Card>
     </div>

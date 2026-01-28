@@ -75,25 +75,35 @@ export default function GoalsPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <div className="flex gap-2">
-        <Input
-          placeholder="Add a new goal..."
-          value={newGoal}
-          onChange={(e) => setNewGoal(e.target.value)}
-        />
-        <Button onClick={handleAddGoal}>Add</Button>
-      </div>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Goals</h1>
+      <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardContent className="p-6 space-y-4">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Add a new goal..."
+              value={newGoal}
+              onChange={(e) => setNewGoal(e.target.value)}
+              className="h-12"
+            />
+            <Button onClick={handleAddGoal} className="h-12 px-8">Add</Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {goals.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">No goals yet.</p>
+        <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
+          <p className="text-muted-foreground">No goals yet.</p>
+        </div>
       ) : (
         <div className="space-y-3">
           {goals.map((goal) => (
-            <Card key={goal.id} className="flex items-center justify-between p-4">
-              <p className={goal.is_completed ? 'line-through text-muted-foreground' : ''}>{goal.title}</p>
-              <Button variant="outline" size="sm" onClick={() => handleToggleComplete(goal)}>
-                {goal.is_completed ? 'Undo' : 'Complete'}
-              </Button>
+            <Card key={goal.id} className="flex items-center justify-between rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+              <CardContent className="flex items-center justify-between w-full p-6">
+                <p className={goal.is_completed ? 'line-through text-muted-foreground' : 'text-foreground'}>{goal.title}</p>
+                <Button variant="outline" size="sm" onClick={() => handleToggleComplete(goal)} className="h-10 px-6">
+                  {goal.is_completed ? 'Undo' : 'Complete'}
+                </Button>
+              </CardContent>
             </Card>
           ))}
         </div>

@@ -60,26 +60,36 @@ export default function JournalPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <div className="flex gap-2">
-        <Input
-          placeholder="Write something..."
-          value={newEntry}
-          onChange={(e) => setNewEntry(e.target.value)}
-        />
-        <Button onClick={handleAddEntry}>Add</Button>
-      </div>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Journal</h1>
+      <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardContent className="p-6 space-y-4">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Write something..."
+              value={newEntry}
+              onChange={(e) => setNewEntry(e.target.value)}
+              className="h-12"
+            />
+            <Button onClick={handleAddEntry} className="h-12 px-8">Add</Button>
+          </div>
+        </CardContent>
+      </Card>
 
       {entries.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">No journal entries yet.</p>
+        <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
+          <p className="text-muted-foreground">No journal entries yet.</p>
+        </div>
       ) : (
         <div className="space-y-3">
           {entries.map((entry) => (
-            <Card key={entry.id}>
-              <CardHeader>
-                <CardTitle>{new Date(entry.created_at).toLocaleDateString()}</CardTitle>
+            <Card key={entry.id} className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+              <CardHeader className="p-6 pb-4">
+                <CardTitle className="text-xl font-bold tracking-tight">
+                  {new Date(entry.created_at).toLocaleDateString()}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p>{entry.content}</p>
+              <CardContent className="px-6 pb-6">
+                <p className="text-foreground">{entry.content}</p>
               </CardContent>
             </Card>
           ))}

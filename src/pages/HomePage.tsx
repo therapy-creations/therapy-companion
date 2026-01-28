@@ -96,9 +96,9 @@ export default function HomePage() {
       </header>
 
       {/* Daily Check-In Card */}
-      <Card className="max-w-xl mx-auto glass p-6 rounded-2xl shadow-md backdrop-blur-md">
+      <Card className="max-w-xl mx-auto p-6 rounded-2xl shadow-md backdrop-blur-md bg-white/80 dark:bg-black/70">
         <CardHeader>
-          <CardTitle className="text-2xl">Daily Check-In</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">Daily Check-In</CardTitle>
           <CardDescription>
             Take a moment to reflect. How are you feeling today, and what are you focusing on?
           </CardDescription>
@@ -125,6 +125,7 @@ export default function HomePage() {
                   placeholder="How are you feeling?"
                   value={mood}
                   onChange={(e) => setMood(e.target.value)}
+                  className="h-12"
                 />
               </div>
               <div>
@@ -134,9 +135,10 @@ export default function HomePage() {
                   placeholder="What are you focusing on today?"
                   value={focus}
                   onChange={(e) => setFocus(e.target.value)}
+                  className="h-12"
                 />
               </div>
-              <Button className="w-full" onClick={handleSubmitCheckIn}>
+              <Button className="w-full h-12 text-base" onClick={handleSubmitCheckIn}>
                 Submit
               </Button>
             </div>
@@ -152,12 +154,12 @@ export default function HomePage() {
           { href: '/goals', title: 'Goals' },
           { href: '/topics', title: 'Topics' },
         ].map((link, index) => (
-          <Card key={index} className="p-6 rounded-2xl shadow-md glass space-y-4 text-center">
-            <CardHeader>
-              <CardTitle>{link.title}</CardTitle>
+          <Card key={index} className="rounded-2xl shadow-md bg-white/80 dark:bg-black/70 backdrop-blur-md text-center">
+            <CardHeader className="p-6 pb-4">
+              <CardTitle className="text-xl font-bold tracking-tight">{link.title}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <Button asChild>
+            <CardContent className="px-6 pb-6">
+              <Button asChild className="h-12 px-8 text-base">
                 <a href={link.href}>
                   Go to {link.title}
                 </a>

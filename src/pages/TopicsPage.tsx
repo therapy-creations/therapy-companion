@@ -123,24 +123,24 @@ export default function TopicsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Topics to Discuss</h1>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Topics to Discuss</h1>
         <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
       </div>
 
-      <Card className="border-2">
-        <CardContent className="pt-6">
+      <Card className="border-2 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardContent className="p-6">
           <form onSubmit={handleAddTopic} className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <Input
                 placeholder="What's on your mind?"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
-                className="h-11"
+                className="h-12"
               />
             </div>
             <div className="flex gap-2">
               <Select value={newPriority} onValueChange={setNewPriority}>
-                <SelectTrigger className="w-[120px] h-11">
+                <SelectTrigger className="w-[120px] h-12">
                   <SelectValue placeholder="Priority" />
                 </SelectTrigger>
                 <SelectContent>
@@ -149,7 +149,7 @@ export default function TopicsPage() {
                   <SelectItem value="high">High</SelectItem>
                 </SelectContent>
               </Select>
-              <Button type="submit" size="icon" className="h-11 w-11 shrink-0">
+              <Button type="submit" size="icon" className="h-12 w-12 shrink-0">
                 <Plus className="h-5 w-5" />
               </Button>
             </div>
@@ -164,7 +164,7 @@ export default function TopicsPage() {
             Active Topics ({activeTopics.length})
           </h2>
           {activeTopics.length > 0 ? activeTopics.map((topic) => (
-            <Card key={topic.id} className="group overflow-hidden">
+            <Card key={topic.id} className="group overflow-hidden rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
               <CardContent className="p-0">
                 <div className="flex items-center px-4 py-4 gap-4">
                   <button 

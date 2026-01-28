@@ -165,10 +165,10 @@ export default function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Profile</h1>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button variant="outline" size="sm" onClick={handleLogout} className="text-destructive border-destructive/20 hover:bg-destructive/10">
+          <Button variant="outline" size="sm" onClick={handleLogout} className="text-destructive border-destructive/20 hover:bg-destructive/10 h-10 px-6">
             <LogOut className="h-4 w-4 mr-2" />
             Log out
           </Button>
@@ -177,8 +177,8 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
-        <Card className="lg:col-span-1 h-fit">
-          <CardContent className="pt-8 pb-6 flex flex-col items-center text-center space-y-4">
+        <Card className="lg:col-span-1 h-fit rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+          <CardContent className="pt-8 pb-6 px-6 flex flex-col items-center text-center space-y-4">
             <div className="relative group">
               <Avatar className="h-32 w-32 border-4 border-muted">
                 <AvatarImage src={formData.avatarUrl || ''} />
@@ -192,7 +192,7 @@ export default function ProfilePage() {
               </label>
             </div>
             <div>
-              <h2 className="text-2xl font-bold">{profile?.display_name}</h2>
+              <h2 className="text-2xl font-bold tracking-tight">{profile?.display_name}</h2>
               <p className="text-muted-foreground text-sm">Member since {new Date(profile?.created_at).getFullYear()}</p>
             </div>
             <div className="flex flex-col gap-2 w-full pt-4">
@@ -207,22 +207,22 @@ export default function ProfilePage() {
 
         {/* Details & Stats */}
         <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0">
-              <CardTitle>Account Details</CardTitle>
+          <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
+              <CardTitle className="text-2xl font-bold tracking-tight">Account Details</CardTitle>
               {!isEditing ? (
-                <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+                <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)} className="h-10 px-6">
                   <Settings className="h-4 w-4 mr-2" />
                   Edit Profile
                 </Button>
               ) : (
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)}>Cancel</Button>
-                  <Button size="sm" onClick={handleSave}>Save</Button>
+                  <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)} className="h-10 px-6">Cancel</Button>
+                  <Button size="sm" onClick={handleSave} className="h-10 px-6">Save</Button>
                 </div>
               )}
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 px-6 pb-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="displayName">Display Name</Label>
@@ -246,12 +246,12 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Your Journey in Numbers</CardTitle>
+          <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+            <CardHeader className="p-6 pb-4">
+              <CardTitle className="text-2xl font-bold tracking-tight">Your Journey in Numbers</CardTitle>
               <p className="text-sm text-muted-foreground">A summary of your commitment to personal growth.</p>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-6 pb-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
                   <div className="flex items-center gap-2 text-muted-foreground">
