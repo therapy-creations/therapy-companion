@@ -149,7 +149,7 @@
   @apply backdrop-blur-md bg-white/70 border border-white/20;
 }
 .dark .glass {
-  @apply bg-black/50 border-white/10;
+  @apply bg-black/50 border-gray-600/30;
 }
 
 /* -------------------- Responsive Utility Examples -------------------- */

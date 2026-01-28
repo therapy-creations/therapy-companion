@@ -15,7 +15,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col">
       
       <header className="flex items-center justify-between mb-12">
-        <span className="text-2xl md:text-3xl font-bold text-primary-foreground">Therapy Pathways</span>
+        <span className="text-2xl md:text-3xl font-bold text-foreground">Therapy Pathways</span>
         <div className="flex gap-4">
           <Button variant="ghost" onClick={handleLogin}>Log in</Button>
           <Button variant="outline" onClick={() => navigate('/learn-more')}>Learn More</Button>
@@ -24,7 +24,7 @@ export default function LandingPage() {
 
       <main className="flex-1 flex flex-col items-center space-y-12 text-center">
         <section className="max-w-3xl space-y-4 animate-fade-in">
-          <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground">
             Your Therapy Companion
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -41,7 +41,7 @@ export default function LandingPage() {
           ].map((item, i) => (
             <div key={i} className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-primary/20">
-                <item.icon className="h-6 w-6 text-primary-foreground" />
+                <item.icon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="font-semibold text-lg">{item.title}</h3>
               <p className="text-sm text-muted-foreground">{item.desc}</p>

@@ -90,7 +90,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col space-y-12">
       <header>
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-primary-foreground mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-foreground mb-8">
           Welcome to your Therapy Companion
         </h1>
       </header>
@@ -158,7 +158,7 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <a href={link.href} className="text-primary-foreground">
+                <a href={link.href}>
                   Go to {link.title}
                 </a>
               </Button>
