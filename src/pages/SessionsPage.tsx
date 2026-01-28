@@ -124,12 +124,12 @@ export default function SessionsPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">Your Sessions</h1>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Your Sessions</h1>
           <p className="text-muted-foreground">Keep track of your therapy appointments and progress.</p>
         </div>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="h-12 px-8 text-base">
               <Plus className="h-4 w-4 mr-2" />
               Schedule Session
             </Button>
@@ -162,7 +162,7 @@ export default function SessionsPage() {
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
+        <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
           <Clock className="h-5 w-5" />
           Upcoming
         </h2>
@@ -171,10 +171,10 @@ export default function SessionsPage() {
             {upcomingSessions.map((session, index) => {
               const isNext = index === upcomingSessions.length - 1
               return (
-                <Card key={session.id} className={isNext ? "border-primary" : ""}>
+                <Card key={session.id} className={cn("p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md", isNext ? "border-primary" : "")}>
                   <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
                     <div className="space-y-1">
-                      <CardTitle className="text-lg">{format(parseISO(session.date), 'EEEE, MMM do')}</CardTitle>
+                      <CardTitle className="text-xl font-bold tracking-tight">{format(parseISO(session.date), 'EEEE, MMM do')}</CardTitle>
                       <CardDescription className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
                         {format(parseISO(session.date), 'h:mm a')}
@@ -200,10 +200,10 @@ export default function SessionsPage() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" size="sm" asChild className="h-10 px-6">
                         <Link to={`/check-in/${session.id}`}>Prepare</Link>
                       </Button>
-                      <Button size="sm" onClick={() => handleMarkComplete(session.id)}>Mark Complete</Button>
+                      <Button size="sm" onClick={() => handleMarkComplete(session.id)} className="h-10 px-6">Mark Complete</Button>
                     </div>
                   </CardFooter>
                 </Card>
@@ -218,24 +218,24 @@ export default function SessionsPage() {
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
+        <h2 className="text-xl font-bold tracking-tight flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5" />
           Past Sessions
         </h2>
         <div className="space-y-3">
           {pastSessions.length > 0 ? pastSessions.map((session) => (
-            <Card key={session.id} className="hover:bg-muted/30 transition-colors">
-              <CardContent className="p-4 flex items-center justify-between">
+            <Card key={session.id} className="hover:bg-muted/30 transition-colors p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+              <CardContent className="p-0 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                     <CheckCircle2 className="h-5 w-5 text-muted-foreground" />
                   </div>
                   <div>
-                    <h4 className="font-semibold">{format(parseISO(session.date), 'MMMM do, yyyy')}</h4>
+                    <h4 className="font-bold tracking-tight">{format(parseISO(session.date), 'MMMM do, yyyy')}</h4>
                     <p className="text-xs text-muted-foreground">Completed at {format(parseISO(session.date), 'h:mm a')}</p>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm" className="group" asChild>
+                <Button variant="ghost" size="sm" className="group h-10 px-6" asChild>
                   <Link to={`/check-in/${session.id}`}>
                     Reflections
                     <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
