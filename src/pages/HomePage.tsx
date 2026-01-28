@@ -154,11 +154,11 @@ export default function HomePage() {
           { href: '/goals', title: 'Goals' },
           { href: '/topics', title: 'Topics' },
         ].map((link, index) => (
-          <Card key={index} className="p-6 rounded-2xl shadow-md bg-white/80 dark:bg-black/70 backdrop-blur-md space-y-4 text-center">
-            <CardHeader>
+          <Card key={index} className="rounded-2xl shadow-md bg-white/80 dark:bg-black/70 backdrop-blur-md text-center">
+            <CardHeader className="p-6 pb-4">
               <CardTitle className="text-xl font-bold tracking-tight">{link.title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-6 pb-6">
               <Button asChild className="h-12 px-8 text-base">
                 <a href={link.href}>
                   Go to {link.title}

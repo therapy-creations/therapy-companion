@@ -127,8 +127,8 @@ export default function TopicsPage() {
         <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
       </div>
 
-      <Card className="border-2 p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-        <CardContent className="p-0">
+      <Card className="border-2 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardContent className="p-6">
           <form onSubmit={handleAddTopic} className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <Input

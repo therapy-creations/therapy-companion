@@ -177,8 +177,8 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
-        <Card className="lg:col-span-1 h-fit p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-          <CardContent className="pt-2 pb-0 flex flex-col items-center text-center space-y-4">
+        <Card className="lg:col-span-1 h-fit rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+          <CardContent className="pt-8 pb-6 px-6 flex flex-col items-center text-center space-y-4">
             <div className="relative group">
               <Avatar className="h-32 w-32 border-4 border-muted">
                 <AvatarImage src={formData.avatarUrl || ''} />
@@ -207,8 +207,8 @@ export default function ProfilePage() {
 
         {/* Details & Stats */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-0 pb-6">
+          <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
               <CardTitle className="text-2xl font-bold tracking-tight">Account Details</CardTitle>
               {!isEditing ? (
                 <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)} className="h-10 px-6">
@@ -222,7 +222,7 @@ export default function ProfilePage() {
                 </div>
               )}
             </CardHeader>
-            <CardContent className="space-y-6 p-0">
+            <CardContent className="space-y-6 px-6 pb-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="displayName">Display Name</Label>
@@ -246,12 +246,12 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          <Card className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-            <CardHeader className="p-0 pb-6">
+          <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+            <CardHeader className="p-6 pb-4">
               <CardTitle className="text-2xl font-bold tracking-tight">Your Journey in Numbers</CardTitle>
               <p className="text-sm text-muted-foreground">A summary of your commitment to personal growth.</p>
             </CardHeader>
-            <CardContent className="p-0">
+            <CardContent className="px-6 pb-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-2xl bg-muted/30 border space-y-2">
                   <div className="flex items-center gap-2 text-muted-foreground">

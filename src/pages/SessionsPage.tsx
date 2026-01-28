@@ -171,8 +171,8 @@ export default function SessionsPage() {
             {upcomingSessions.map((session, index) => {
               const isNext = index === upcomingSessions.length - 1
               return (
-                <Card key={session.id} className={cn("p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md", isNext ? "border-primary" : "")}>
-                  <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
+                <Card key={session.id} className={cn("rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md", isNext ? "border-primary" : "")}>
+                  <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0 p-6">
                     <div className="space-y-1">
                       <CardTitle className="text-xl font-bold tracking-tight">{format(parseISO(session.date), 'EEEE, MMM do')}</CardTitle>
                       <CardDescription className="flex items-center gap-1">
@@ -182,10 +182,10 @@ export default function SessionsPage() {
                     </div>
                     {isNext && <Badge>Next Session</Badge>}
                   </CardHeader>
-                  <CardContent className="pb-4">
+                  <CardContent className="pb-4 px-6">
                     {session.notes && <p className="text-sm text-muted-foreground line-clamp-2 italic">"{session.notes}"</p>}
                   </CardContent>
-                  <CardFooter className="flex justify-between border-t pt-4">
+                  <CardFooter className="flex justify-between border-t pt-4 px-6 pb-6">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
@@ -224,8 +224,8 @@ export default function SessionsPage() {
         </h2>
         <div className="space-y-3">
           {pastSessions.length > 0 ? pastSessions.map((session) => (
-            <Card key={session.id} className="hover:bg-muted/30 transition-colors p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-              <CardContent className="p-0 flex items-center justify-between">
+            <Card key={session.id} className="hover:bg-muted/30 transition-colors rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+              <CardContent className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
                     <CheckCircle2 className="h-5 w-5 text-muted-foreground" />

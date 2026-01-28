@@ -61,8 +61,8 @@ export default function JournalPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Journal</h1>
-      <Card className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-        <CardContent className="space-y-4">
+      <Card className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+        <CardContent className="p-6 space-y-4">
           <div className="flex gap-2">
             <Input
               placeholder="Write something..."
@@ -82,13 +82,13 @@ export default function JournalPage() {
       ) : (
         <div className="space-y-3">
           {entries.map((entry) => (
-            <Card key={entry.id} className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
-              <CardHeader>
+            <Card key={entry.id} className="rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md">
+              <CardHeader className="p-6 pb-4">
                 <CardTitle className="text-xl font-bold tracking-tight">
                   {new Date(entry.created_at).toLocaleDateString()}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-6 pb-6">
                 <p className="text-foreground">{entry.content}</p>
               </CardContent>
             </Card>
