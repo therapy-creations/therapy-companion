@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Home, Calendar, MessageSquare, Target, BookOpen, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 interface LayoutProps {
   children: ReactNode
@@ -40,6 +41,7 @@ export function Layout({ children }: LayoutProps) {
                 {item.label}
               </Link>
             ))}
+            <ThemeToggle />
           </nav>
         </div>
       </header>
