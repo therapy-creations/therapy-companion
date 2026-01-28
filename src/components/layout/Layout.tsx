@@ -23,7 +23,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 flex flex-col">
       {/* Desktop Header */}
-      <header className="hidden md:flex sticky top-0 z-40 w-full border-b bg-white/80 dark:bg-black/60 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/40">
+      <header className="hidden md:flex sticky top-0 z-40 w-full border-b bg-white/70 dark:bg-black/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-black/60">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-xl font-bold tracking-tight">Therapy Pathways</span>
@@ -52,7 +52,7 @@ export function Layout({ children }: LayoutProps) {
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/60 backdrop-blur border-t px-4 py-2">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/70 dark:bg-black/70 backdrop-blur border-t px-4 py-2">
         <div className="flex justify-between items-center max-w-lg mx-auto">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path
