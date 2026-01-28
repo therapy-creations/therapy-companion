@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 import { Loader } from '@/components/ui/Loader'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { cn } from '@/lib/utils'
 
 export default function SessionsPage() {
   const [loading, setLoading] = useState(true)
