@@ -5,17 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && bash scripts/cleanup-css.sh",
     "preview": "vite preview",
     "lint": "echo \"lint skipped\""
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
-
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2",
-
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -43,7 +37,7 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
-
+    "@supabase/supabase-js": "^2.45.0",
     "autoprefixer": "10.4.16",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
@@ -56,11 +50,14 @@
     "lucide-react": "^0.562.0",
     "next-themes": "^0.4.6",
     "postcss": "8.4.31",
+    "react": "^18.3.1",
     "react-day-picker": "^9.13.0",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.71.1",
     "react-hot-toast": "^2.6.0",
     "react-resizable-panels": "^4.4.1",
     "react-responsive": "^10.0.1",
+    "react-router-dom": "^6.26.2",
     "recharts": "2.15.4",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
@@ -71,6 +68,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.2",
+    "postcss-clean": "^1.2.2",
     "stylelint": "^17.0.0",
     "stylelint-config-standard": "^40.0.0",
     "typescript": "~5.9.3",
