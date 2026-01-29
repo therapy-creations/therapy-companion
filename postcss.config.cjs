@@ -1,6 +1,13 @@
 module.exports = {
   plugins: {
-    tailwindcss: require('tailwindcss'),
-    autoprefixer: require('autoprefixer'),
+    tailwindcss: {},
+    autoprefixer: {},
+    cssnano: {
+      preset: ['default', {
+        discardComments: {
+          removeAll: true,
+        },
+      }],
+    },
   }
 } 
