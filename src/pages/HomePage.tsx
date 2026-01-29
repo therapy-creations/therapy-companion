@@ -163,7 +163,7 @@ export default function HomePage() {
           ].map((link, index) => (
             <Card key={index} className="text-center hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <CardTitle className="text-lg font-bold tracking-tight mb-3">{link.title}</CardTitle>
+                <CardTitle className="text-lg font-bold tracking-tight text-gray-900 mb-3">{link.title}</CardTitle>
                 <Button asChild className="h-10 w-full">
                   <a href={link.href}>
                     Go to {link.title}
