@@ -60,7 +60,7 @@ export default function JournalPage() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Journal</h1>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Journal</h1>
       <Card>
         <CardContent className="p-6 space-y-4">
           <div className="flex gap-2">
@@ -76,8 +76,8 @@ export default function JournalPage() {
       </Card>
 
       {entries.length === 0 ? (
-        <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
-          <p className="text-muted-foreground">No journal entries yet.</p>
+        <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-gray-50">
+          <p className="text-gray-600">No journal entries yet.</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -89,7 +89,7 @@ export default function JournalPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="px-6 pb-6">
-                <p className="text-foreground">{entry.content}</p>
+                <p className="text-gray-900">{entry.content}</p>
               </CardContent>
             </Card>
           ))}
