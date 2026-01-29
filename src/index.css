@@ -14,7 +14,7 @@
     --card-foreground: 220 15% 15%;
     --popover: 210 95% 100%;
     --popover-foreground: 220 15% 15%;
-    --primary: 225 70% 90%;
+    --primary: 233 55.1% 85.5%;
     --primary-foreground: 225 20% 15%;
     --secondary: 210 85% 92%;
     --secondary-foreground: 220 15% 15%;
@@ -31,7 +31,7 @@
     /* Sidebar colors for light mode */
     --sidebar-background: 210 95% 100%;
     --sidebar-foreground: 220 15% 15%;
-    --sidebar-primary: 225 70% 90%;
+    --sidebar-primary: 233 55.1% 85.5%;
     --sidebar-primary-foreground: 225 20% 15%;
     --sidebar-accent: 190 70% 85%;
     --sidebar-accent-foreground: 220 15% 15%;
