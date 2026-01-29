@@ -54,8 +54,8 @@ export default function CheckInPage() {
   if (loading) return <Loader />
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+    <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
         {session?.status === 'completed' ? 'Session Reflection' : 'Prepare for Session'}
       </h1>
       <Card>
@@ -64,7 +64,7 @@ export default function CheckInPage() {
         </CardHeader>
         <CardContent className="px-6 pb-6 space-y-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="notes" className="font-medium text-foreground">What would you like to focus on?</label>
+            <label htmlFor="notes" className="font-medium text-gray-900">What would you like to focus on?</label>
             <Input
               id="notes"
               value={notes}
