@@ -25,7 +25,7 @@ export function Layout({ children }: LayoutProps) {
       <header className="hidden md:flex sticky top-0 z-40 w-full border-b bg-gradient-to-br from-blue-100 via-purple-100 to-aqua-100 backdrop-blur supports-[backdrop-filter]:bg-white/80">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold tracking-tight">Therapy Pathways</span>
+            <span className="text-xl font-bold tracking-tight text-gray-900">Therapy Pathways</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navItems.map((item) => (

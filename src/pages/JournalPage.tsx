@@ -59,8 +59,11 @@ export default function JournalPage() {
   if (loading) return <Loader />
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
-      <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Journal</h1>
+    <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
+      <div className="space-y-2">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Journal</h1>
+        <p className="text-gray-600">Record your thoughts, feelings, and reflections.</p>
+      </div>
       <Card>
         <CardContent className="p-6 space-y-4">
           <div className="flex gap-2">
