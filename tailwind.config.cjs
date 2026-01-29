@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Remove dark mode configuration by omitting the 'darkMode' property
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Ensure tailwind applies to your project files
+    "./src/**/*.{js,ts,jsx,tsx}", // Ensure Tailwind applies to your project files
   ],
   theme: {
     extend: {
@@ -14,7 +13,8 @@ module.exports = {
         ring: "#e0e7ff",
         background: "#ffffff",
         foreground: "#111827",
-        primary: "#adb8ed",
+        primary: {
+          DEFAULT: "#adb8ed",
         },
         accent: {
           DEFAULT: "#84d19f", // Accent green
