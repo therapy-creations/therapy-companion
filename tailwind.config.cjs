@@ -14,17 +14,7 @@ module.exports = {
         ring: "#e0e7ff",
         background: "#ffffff",
         foreground: "#111827",
-        primary: {
-          DEFAULT: "#adb8ed",
-          foreground: "#ffffff", // White text on primary color
-        },
-        secondary: {
-          DEFAULT: "#6b7280", // Neutral secondary
-          foreground: "#ffffff",
-        },
-        muted: {
-          DEFAULT: "#f3f4f6",
-          foreground: "#6b7280",
+        primary: "#adb8ed",
         },
         accent: {
           DEFAULT: "#84d19f", // Accent green
