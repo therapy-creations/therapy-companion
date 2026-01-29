@@ -123,8 +123,8 @@ export default function TopicsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 animate-fade-in">
       <div className="space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Topics to Discuss</h1>
-        <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Topics to Discuss</h1>
+        <p className="text-gray-600">Things you want to talk about in your next session.</p>
       </div>
 
       <Card className="border-2">
@@ -159,7 +159,7 @@ export default function TopicsPage() {
 
       <div className="space-y-6">
         <div className="space-y-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2">
             <MessageSquare className="h-4 w-4" />
             Active Topics ({activeTopics.length})
           </h2>
@@ -169,7 +169,7 @@ export default function TopicsPage() {
                 <div className="flex items-center px-4 py-4 gap-4">
                   <button 
                     onClick={() => handleToggleComplete(topic)}
-                    className="shrink-0 text-muted-foreground hover:text-primary transition-colors"
+                    className="shrink-0 text-gray-400 hover:text-blue-600 transition-colors"
                   >
                     <Circle className="h-6 w-6" />
                   </button>
@@ -193,31 +193,31 @@ export default function TopicsPage() {
               </CardContent>
             </Card>
           )) : (
-            <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-muted/20">
-              <AlertCircle className="h-8 w-8 mx-auto mb-3 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No topics saved yet. Add something above!</p>
+            <div className="text-center py-12 border-2 border-dashed rounded-2xl bg-gray-50">
+              <AlertCircle className="h-8 w-8 mx-auto mb-3 text-gray-400 opacity-50" />
+              <p className="text-gray-600">No topics saved yet. Add something above!</p>
             </div>
           )}
         </div>
 
         {completedTopics.length > 0 && (
           <div className="space-y-3 pt-4">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-600 flex items-center gap-2">
               <CheckCircle2 className="h-4 w-4" />
               Discussed
             </h2>
             {completedTopics.map((topic) => (
               <div 
                 key={topic.id} 
-                className="flex items-center px-4 py-3 gap-4 bg-muted/30 rounded-xl border border-transparent group"
+                className="flex items-center px-4 py-3 gap-4 bg-gray-100 rounded-xl border border-transparent group"
               >
                 <button 
                   onClick={() => handleToggleComplete(topic)}
-                  className="shrink-0 text-primary"
+                  className="shrink-0 text-blue-600"
                 >
                   <CheckCircle2 className="h-6 w-6" />
                 </button>
-                <p className="flex-1 text-muted-foreground line-through decoration-muted-foreground/50">{topic.title}</p>
+                <p className="flex-1 text-gray-500 line-through decoration-gray-400">{topic.title}</p>
                 <Button 
                   variant="ghost" 
                   size="icon" 
