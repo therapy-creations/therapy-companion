@@ -96,7 +96,7 @@ export default function HomePage() {
       </header>
 
       {/* Daily Check-In Card */}
-      <Card className="max-w-xl mx-auto p-6 rounded-2xl shadow-md backdrop-blur-md">
+      <Card className="max-w-xl mx-auto p-6">
         <CardHeader>
           <CardTitle className="text-2xl font-bold tracking-tight">Daily Check-In</CardTitle>
           <CardDescription>
@@ -154,7 +154,7 @@ export default function HomePage() {
           { href: '/goals', title: 'Goals' },
           { href: '/topics', title: 'Topics' },
         ].map((link, index) => (
-          <Card key={index} className="rounded-2xl shadow-md backdrop-blur-md text-center">
+          <Card key={index} className="text-center">
             <CardHeader className="p-6 pb-4">
               <CardTitle className="text-xl font-bold tracking-tight">{link.title}</CardTitle>
             </CardHeader>

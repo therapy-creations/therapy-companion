@@ -58,7 +58,7 @@ export default function CheckInPage() {
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
         {session?.status === 'completed' ? 'Session Reflection' : 'Prepare for Session'}
       </h1>
-      <Card className="rounded-2xl backdrop-blur-md shadow-md">
+      <Card>
         <CardHeader className="p-6 pb-4">
           <CardTitle className="text-2xl font-bold">Notes & Focus Points</CardTitle>
         </CardHeader>

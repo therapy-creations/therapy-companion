@@ -76,7 +76,7 @@ export default function GoalsPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Goals</h1>
-      <Card className="rounded-2xl backdrop-blur-md shadow-md">
+      <Card>
         <CardContent className="p-6 space-y-4">
           <div className="flex gap-2">
             <Input
@@ -97,7 +97,7 @@ export default function GoalsPage() {
       ) : (
         <div className="space-y-3">
           {goals.map((goal) => (
-            <Card key={goal.id} className="flex items-center justify-between rounded-2xl backdrop-blur-md shadow-md">
+            <Card key={goal.id} className="flex items-center justify-between">
               <CardContent className="flex items-center justify-between w-full p-6">
                 <p className={goal.is_completed ? 'line-through text-muted-foreground' : 'text-foreground'}>{goal.title}</p>
                 <Button variant="outline" size="sm" onClick={() => handleToggleComplete(goal)} className="h-10 px-6">
