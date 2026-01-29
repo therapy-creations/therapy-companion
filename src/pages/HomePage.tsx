@@ -21,7 +21,9 @@ export default function HomePage() {
   const fetchDailyCheckIn = async () => {
     try {
       setLoading(true)
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
       const today = format(new Date(), 'yyyy-MM-dd')
@@ -53,7 +55,9 @@ export default function HomePage() {
 
     try {
       setLoading(true)
-      const { data: { user } } = await supabase.auth.getUser()
+      const {
+        data: { user }
+      } = await supabase.auth.getUser()
       if (!user) return
 
       const today = format(new Date(), 'yyyy-MM-dd')
@@ -90,7 +94,7 @@ export default function HomePage() {
   return (
     <div className="space-y-12">
       <header>
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-foreground mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-8">
           Welcome to your Therapy Companion
         </h1>
       </header>
@@ -112,7 +116,7 @@ export default function HomePage() {
               <p>
                 <span className="font-semibold">Focus:</span> {checkIn.focus}
               </p>
-              <p className="text-sm text-muted-foreground italic">
+              <p className="text-sm text-gray-500 italic">
                 You’ve already checked in today.
               </p>
             </div>
@@ -168,7 +172,6 @@ export default function HomePage() {
           </Card>
         ))}
       </section>
-
     </div>
   )
 }
