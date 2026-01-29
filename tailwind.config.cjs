@@ -15,7 +15,7 @@ module.exports = {
         background: "#ffffff",
         foreground: "#111827",
         primary: {
-          DEFAULT: "#2563eb", // Primary blue
+          DEFAULT: "#adb8ed", // Primary blue
           foreground: "#ffffff", // White text on primary color
         },
         secondary: {
