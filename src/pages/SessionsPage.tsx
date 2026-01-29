@@ -4,17 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, Clock, Plus, Trash2, CheckCircle2, Circle } from 'lucide-react'
+import { Calendar, Clock, Plus, Trash2, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Loader } from '@/components/ui/Loader'
 import { format } from 'date-fns'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 export default function SessionsPage() {
   const [loading, setLoading] = useState(true)
@@ -39,7 +32,7 @@ export default function SessionsPage() {
         .from('appointments')
         .select('*')
         .eq('user_id', user.id)
-        .order('date', { ascending: false })
+        .order('date', { ascending: true })
 
       if (error) throw error
       setSessions(data || [])
@@ -206,7 +199,7 @@ export default function SessionsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
                       <p className="font-semibold text-lg text-gray-900">
-                        {format(new Date(session.date), 'EEEE, MMMM d, yyyy')}
+                        {session.date ? format(new Date(session.date), 'EEEE, MMMM d, yyyy') : 'Date not set'}
                       </p>
                     </div>
                     {session.time && (
@@ -237,6 +230,7 @@ export default function SessionsPage() {
                     size="icon" 
                     onClick={() => handleDeleteSession(session.id)}
                     className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:bg-red-50"
+                    aria-label="Delete session"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -265,7 +259,7 @@ export default function SessionsPage() {
                 <CheckCircle2 className="h-6 w-6 text-green-600 shrink-0 mt-0.5" />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900">
-                    {format(new Date(session.date), 'EEEE, MMMM d, yyyy')}
+                    {session.date ? format(new Date(session.date), 'EEEE, MMMM d, yyyy') : 'Date not set'}
                   </p>
                   {session.time && (
                     <p className="text-sm text-gray-600">{session.time}</p>
@@ -279,6 +273,7 @@ export default function SessionsPage() {
                   size="icon" 
                   onClick={() => handleDeleteSession(session.id)}
                   className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600"
+                  aria-label="Delete session"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

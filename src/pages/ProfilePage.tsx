@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
 import { Loader } from '@/components/ui/Loader'
@@ -66,7 +65,7 @@ export default function ProfilePage() {
           {user && (
             <>
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-900">Email</Label>
+                <Label className="text-gray-900">Email</Label>
                 <div className="flex items-center gap-2 text-gray-600">
                   <Mail className="h-4 w-4" />
                   <span>{user.email}</span>
@@ -83,11 +82,11 @@ export default function ProfilePage() {
               <div className="space-y-2">
                 <Label className="text-gray-900">Account Created</Label>
                 <p className="text-sm text-gray-600">
-                  {new Date(user.created_at).toLocaleDateString('en-US', {
+                  {user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                  })}
+                  }) : 'Date not available'}
                 </p>
               </div>
             </>
