@@ -7,6 +7,15 @@ BUILD_DIR="dist/assets"
 
 echo "Starting CSS cleanup..."
 
+# Detect OS for sed compatibility
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS (BSD sed requires empty string for in-place editing)
+  SED_INPLACE="sed -i ''"
+else
+  # Linux (GNU sed)
+  SED_INPLACE="sed -i"
+fi
+
 # Find all CSS files in the build directory
 if [ -d "$BUILD_DIR" ]; then
   for css_file in "$BUILD_DIR"/*.css; do
@@ -15,10 +24,10 @@ if [ -d "$BUILD_DIR" ]; then
       
       # Remove all occurrences of fill-primary rules using sed
       # This removes the rule and its value (e.g., .fill-primary{fill:#adb8ed})
-      sed -i -E 's/\.fill-[a-zA-Z0-9-]+\{[^}]*\}//g' "$css_file"
+      $SED_INPLACE -E 's/\.fill-[a-zA-Z0-9-]+\{[^}]*\}//g' "$css_file"
       
       # Remove any standalone fill utilities
-      sed -i -E 's/\.fill-[a-zA-Z0-9-]+[,\s]*//g' "$css_file"
+      $SED_INPLACE -E 's/\.fill-[a-zA-Z0-9-]+[,\s]*//g' "$css_file"
       
       echo "Cleaned: $css_file"
     fi

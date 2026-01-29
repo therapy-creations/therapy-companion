@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  mode: 'jit', // Enable Just-In-Time mode for better CSS cleanup
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}", // Ensure Tailwind applies to your project files
