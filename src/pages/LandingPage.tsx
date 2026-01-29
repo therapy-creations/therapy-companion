@@ -39,7 +39,7 @@ export default function LandingPage() {
             { icon: Sparkles, title: "Guided Reflection", desc: "Structured prompts make post-session insights easy." },
             { icon: TrendingUp, title: "Goal Progress", desc: "Celebrate small wins and track your growth." }
           ].map((item, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-white/80 dark:bg-black/70 backdrop-blur-md shadow-md space-y-4">
+            <div key={i} className="p-6 rounded-2xl bg-card/80 backdrop-blur-md shadow-md space-y-4">
               <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-primary/20">
                 <item.icon className="h-6 w-6 text-primary" />
               </div>
