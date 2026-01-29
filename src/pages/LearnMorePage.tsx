@@ -37,7 +37,7 @@ export default function LearnMorePage() {
 
       <section className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {features.map((feature, idx) => (
-          <div key={idx} className="p-6 rounded-2xl border bg-card space-y-4 text-center shadow-md hover:shadow-lg transition-shadow">
+          <div key={idx} className="p-6 rounded-2xl border bg-white/80 dark:bg-black/70 backdrop-blur-md space-y-4 text-center shadow-md hover:shadow-lg transition-shadow">
             <div className="h-12 w-12 mx-auto rounded-full bg-primary/20 flex items-center justify-center">
               <feature.icon className="h-6 w-6 text-primary" />
             </div>

@@ -177,7 +177,7 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
-        <Card className="lg:col-span-1 h-fit rounded-2xl backdrop-blur-md shadow-md">
+        <Card className="lg:col-span-1 h-fit">
           <CardContent className="pt-8 pb-6 px-6 flex flex-col items-center text-center space-y-4">
             <div className="relative group">
               <Avatar className="h-32 w-32 border-4 border-muted">
@@ -207,7 +207,7 @@ export default function ProfilePage() {
 
         {/* Details & Stats */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="rounded-2xl backdrop-blur-md shadow-md">
+          <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-4">
               <CardTitle className="text-2xl font-bold tracking-tight">Account Details</CardTitle>
               {!isEditing ? (
@@ -246,7 +246,7 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          <Card className="rounded-2xl backdrop-blur-md shadow-md">
+          <Card>
             <CardHeader className="p-6 pb-4">
               <CardTitle className="text-2xl font-bold tracking-tight">Your Journey in Numbers</CardTitle>
               <p className="text-sm text-muted-foreground">A summary of your commitment to personal growth.</p>

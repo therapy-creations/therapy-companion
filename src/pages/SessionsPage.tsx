@@ -172,7 +172,7 @@ export default function SessionsPage() {
             {upcomingSessions.map((session, index) => {
               const isNext = index === upcomingSessions.length - 1
               return (
-                <Card key={session.id} className={cn("rounded-2xl backdrop-blur-md shadow-md", isNext ? "border-primary" : "")}>
+                <Card key={session.id} className={cn(isNext ? "border-primary" : "")}>
                   <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0 p-6">
                     <div className="space-y-1">
                       <CardTitle className="text-xl font-bold tracking-tight">{format(parseISO(session.date), 'EEEE, MMM do')}</CardTitle>
@@ -225,7 +225,7 @@ export default function SessionsPage() {
         </h2>
         <div className="space-y-3">
           {pastSessions.length > 0 ? pastSessions.map((session) => (
-            <Card key={session.id} className="hover:bg-muted/30 transition-colors rounded-2xl backdrop-blur-md shadow-md">
+            <Card key={session.id} className="hover:bg-muted/30 transition-colors">
               <CardContent className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">

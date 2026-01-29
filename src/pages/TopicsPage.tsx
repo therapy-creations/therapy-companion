@@ -127,7 +127,7 @@ export default function TopicsPage() {
         <p className="text-muted-foreground">Things you want to talk about in your next session.</p>
       </div>
 
-      <Card className="border-2 rounded-2xl backdrop-blur-md shadow-md">
+      <Card className="border-2">
         <CardContent className="p-6">
           <form onSubmit={handleAddTopic} className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
@@ -164,7 +164,7 @@ export default function TopicsPage() {
             Active Topics ({activeTopics.length})
           </h2>
           {activeTopics.length > 0 ? activeTopics.map((topic) => (
-            <Card key={topic.id} className="group overflow-hidden rounded-2xl backdrop-blur-md shadow-md">
+            <Card key={topic.id} className="group overflow-hidden">
               <CardContent className="p-0">
                 <div className="flex items-center px-4 py-4 gap-4">
                   <button 
