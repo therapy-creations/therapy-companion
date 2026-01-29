@@ -92,11 +92,12 @@ export default function HomePage() {
   if (loading) return <Loader />
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100/70 via-purple-100/50 to-aqua-100/70 dark:from-blue-900/70 dark:via-purple-900/50 dark:to-aqua-900/70 p-6 sm:p-12 flex flex-col">
-      <header>
-        <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-8">
+    <div className="space-y-8 animate-fade-in">
+      <header className="text-center">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
           Welcome to your Therapy Companion
         </h1>
+        <p className="text-gray-600 text-lg">Take a moment to check in with yourself</p>
       </header>
 
       {/* Daily Check-In Card */}
@@ -151,26 +152,27 @@ export default function HomePage() {
       </Card>
 
       {/* Quick Links Section */}
-      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-        {[
-          { href: '/sessions', title: 'Sessions' },
-          { href: '/journal', title: 'Journal' },
-          { href: '/goals', title: 'Goals' },
-          { href: '/topics', title: 'Topics' },
-        ].map((link, index) => (
-          <Card key={index} className="text-center">
-            <CardHeader className="p-6 pb-4">
-              <CardTitle className="text-xl font-bold tracking-tight">{link.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="px-6 pb-6">
-              <Button asChild className="h-12 px-8 text-base">
-                <a href={link.href}>
-                  Go to {link.title}
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+      <section className="max-w-4xl mx-auto mt-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Access</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            { href: '/sessions', title: 'Sessions' },
+            { href: '/journal', title: 'Journal' },
+            { href: '/goals', title: 'Goals' },
+            { href: '/topics', title: 'Topics' },
+          ].map((link, index) => (
+            <Card key={index} className="text-center hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <CardTitle className="text-lg font-bold tracking-tight mb-3">{link.title}</CardTitle>
+                <Button asChild className="h-10 w-full">
+                  <a href={link.href}>
+                    Go to {link.title}
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </section>
     </div>
   )
