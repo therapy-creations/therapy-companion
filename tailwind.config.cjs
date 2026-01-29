@@ -15,7 +15,7 @@ module.exports = {
         background: "#ffffff",
         foreground: "#111827",
         primary: {
-          DEFAULT: "#adb8ed", // Primary blue
+          DEFAULT: "#adb8ed",
           foreground: "#ffffff", // White text on primary color
         },
         secondary: {
@@ -27,11 +27,11 @@ module.exports = {
           foreground: "#6b7280",
         },
         accent: {
-          DEFAULT: "#4ade80", // Accent green
+          DEFAULT: "#84d19f", // Accent green
           foreground: "#ffffff",
         },
         destructive: {
-          DEFAULT: "#dc2626", // Red for error states
+          DEFAULT: "#f06565", // Red for error states
           foreground: "#ffffff",
         },
         card: {
