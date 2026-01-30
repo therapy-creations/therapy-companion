@@ -143,7 +143,7 @@ export default function HomePage() {
                   className="h-12"
                 />
               </div>
-              <Button className="w-full h-12 text-base" onClick={handleSubmitCheckIn}>
+              <Button size="lg" className="w-full h-12 text-base" onClick={handleSubmitCheckIn}>
                 Submit
               </Button>
             </div>
