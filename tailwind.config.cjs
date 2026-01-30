@@ -29,6 +29,10 @@ module.exports = {
           foreground: "#111827",
         },
       },
+        safelist: [
+        "bg-[#adb8ed]",
+        "hover:bg-[#adb8ed]/90",
+      ],
       // Set border radius sizes (optional)
       borderRadius: {
         lg: "12px",
