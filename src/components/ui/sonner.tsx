@@ -11,20 +11,19 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
-        // INLINE STYLES: These are injected directly into the HTML elements
-        // and usually override any external .css file.
+        // STYLES: This property injects CSS directly into the button's 'style' attribute
         actionButtonStyle: {
+          background: 'hsl(227, 58%, 80%)',
           backgroundColor: 'hsl(227, 58%, 80%)',
           color: '#ffffff',
         },
         cancelButtonStyle: {
-          backgroundColor: 'hsl(var(--muted))',
+          background: 'hsl(var(--muted))',
           color: 'hsl(var(--muted-foreground))',
         },
         classNames: {
           toast: "group toast",
-          // We keep the classes here just in case, but style takes precedence
-          actionButton: "hover:!opacity-90 transition-opacity", 
+          actionButton: "group-[.toast]:!bg-[hsl(227,58%,80%)] group-[.toast]:!text-white",
         },
       }}
       {...props}
