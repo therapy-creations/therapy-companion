@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+button .fill-primary {
+    fill: #8b5cf6;
+}
+
 /* -------------------- Base Theme -------------------- */
 @layer base {
   :root {
