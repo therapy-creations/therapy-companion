@@ -3,40 +3,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* -------------------- Base Theme -------------------- */
-@layer base {
-  :root {
-    /* Aura Theme - Light Mode */
-    --background: 210 95% 97%;
-    --foreground: 220 15% 15%;
-    --card: 210 95% 100%;
-    --card-foreground: 220 15% 15%;
-    --popover: 210 95% 100%;
-    --popover-foreground: 220 15% 15%;
-    
-    /* Primary Color: #adb8ed (Periwinkle) */
-    --primary: 227 58% 80%; 
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 210 85% 92%;
-    --secondary-foreground: 220 15% 15%;
-    --muted: 210 80% 95%;
-    --muted-foreground: 220 15% 45%;
-    --accent: 190 70% 85%;
-    --accent-foreground: 220 15% 15%;
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 80% 90%;
-    --input: 210 80% 90%;
-    --ring: 227 58% 80%;
-    
-    --radius: 0.75rem;
-  }
+/* -------------------- Aura Root Theme -------------------- */
+:root {
+  --background: 210 95% 97%;
+  --foreground: 220 15% 15%;
+  --card: 210 95% 100%;
+  --card-foreground: 220 15% 15%;
+  --popover: 210 95% 100%;
+  --popover-foreground: 220 15% 15%;
   
+  /* Aura Periwinkle */
+  --primary: 227 58% 80%; 
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 210 85% 92%;
+  --secondary-foreground: 220 15% 15%;
+  --muted: 210 80% 95%;
+  --muted-foreground: 220 15% 45%;
+  --accent: 190 70% 85%;
+  --accent-foreground: 220 15% 15%;
+  --destructive: 0 75% 55%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 210 80% 90%;
+  --input: 210 80% 90%;
+  --ring: 227 58% 80%;
+  
+  --radius: 0.75rem;
+}
+
+@layer base {
   * {
     @apply border-border;
   }
-  
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Geist', sans-serif;
@@ -44,40 +42,36 @@
 }
 
 /* -------------------------------------------------------------------------
-   THE NUCLEAR OVERRIDE
-   This section is placed OUTSIDE of @layer to ensure it loads last.
-   We target the 'a' tag specifically since it's ignoring button styles.
+   NUCLEAR OVERRIDE: FORCE PERIWINKLE (#adb8ed)
+   This targets BOTH buttons and the blue-600 leakage from Layout.
    ------------------------------------------------------------------------- */
 
-/* 1. Kill the 'rgb(37 99 235)' blue and force Periwinkle */
-html body [data-sonner-toaster] [data-toast] a.bg-primary,
-html body [data-sonner-toaster] [data-toast] button.bg-primary,
-html body [data-sonner-toaster] [data-toast] [data-button="true"],
-html body [data-sonner-toaster] .bg-primary {
+/* Targets anything using bg-primary or specifically blue-600 */
+html body .bg-primary, 
+html body .text-blue-600,
+html body [data-sonner-toaster] [data-button="true"],
+html body [data-sonner-toaster] a.bg-primary {
   background-color: #adb8ed !important;
-  background: #adb8ed !important;
-  color: #ffffff !important;
-  opacity: 1 !important;
-  --tw-bg-opacity: 1 !important; /* Overrides the tailwind opacity variable */
-  border-radius: 0.75rem !important;
+  color: white !important;
+  border-color: #adb8ed !important;
+  --tw-text-opacity: 1 !important;
+  --tw-bg-opacity: 1 !important;
 }
 
-/* 2. Force the Hover State */
-html body [data-sonner-toaster] [data-toast] a.bg-primary:hover,
-html body [data-sonner-toaster] [data-toast] button.bg-primary:hover,
-html body [data-sonner-toaster] [data-toast] [data-button="true"]:hover {
+/* Specific fix for the text in your Mobile Nav since it uses 'text-blue-600' */
+html body .text-blue-600 {
+  color: #8a99e4 !important; /* A slightly darker periwinkle for text legibility */
+}
+
+/* Hover States */
+html body .bg-primary:hover,
+html body [data-sonner-toaster] [data-button="true"]:hover {
   background-color: #9ba7e0 !important;
-  background: #9ba7e0 !important;
 }
 
-/* 3. Ensure the Toast Container itself matches Aura */
-html body [data-sonner-toaster] [data-sonner-toast] {
-  background-color: hsl(var(--card)) !important;
-  color: hsl(var(--card-foreground)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-}
-
-/* 4. Description text fix */
-html body [data-sonner-toaster] [data-description] {
-  color: hsl(var(--muted-foreground)) !important;
+/* Ensure Toasts follow the theme */
+[data-sonner-toaster] [data-sonner-toast] {
+  background-color: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 0.75rem !important;
 }
