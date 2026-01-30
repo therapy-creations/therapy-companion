@@ -11,15 +11,20 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
+        // INLINE STYLES: These are injected directly into the HTML elements
+        // and usually override any external .css file.
+        actionButtonStyle: {
+          backgroundColor: 'hsl(227, 58%, 80%)',
+          color: '#ffffff',
+        },
+        cancelButtonStyle: {
+          backgroundColor: 'hsl(var(--muted))',
+          color: 'hsl(var(--muted-foreground))',
+        },
         classNames: {
-          toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
-          description: "group-[.toast]:text-muted-foreground",
-          // THIS IS THE FIX: Target the button and use your primary HSL variable
-          actionButton:
-            "group-[.toast]:!bg-[hsl(var(--primary))] group-[.toast]:!text-[hsl(var(--primary-foreground))] font-medium",
-          cancelButton:
-            "group-[.toast]:!bg-muted group-[.toast]:!text-muted-foreground",
+          toast: "group toast",
+          // We keep the classes here just in case, but style takes precedence
+          actionButton: "hover:!opacity-90 transition-opacity", 
         },
       }}
       {...props}
