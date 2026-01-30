@@ -60,7 +60,7 @@ export function Layout({ children }: LayoutProps) {
                 to={item.path}
                 className={cn(
                   "flex flex-col items-center justify-center space-y-1 p-2 transition-colors",
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-primary" : "text-gray-500"
                 )}
               >
                 <item.icon className={cn("h-5 w-5", isActive && "stroke-[2.5px]")} />
