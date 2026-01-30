@@ -13,10 +13,6 @@ import ProfilePage from './pages/ProfilePage'
 import { Loader } from './components/ui/Loader'
 import { supabase } from './lib/supabase'
 
-button .fill-primary {
-    fill: #8b5cf6;
-}
-
 export default function App() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
