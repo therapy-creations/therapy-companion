@@ -1,9 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { Heart, Shield, Sparkles, TrendingUp } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'
-import { useNavigate } from 'react-router-dom'
-import { Loader } from '@/components/ui/Loader'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Loader } from '@/components/ui/Loader'
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true)
@@ -21,6 +26,7 @@ export default function HomePage() {
       const {
         data: { user }
       } = await supabase.auth.getUser()
+
       if (!user) return
 
       const today = format(new Date(), 'yyyy-MM-dd')
@@ -55,6 +61,7 @@ export default function HomePage() {
       const {
         data: { user }
       } = await supabase.auth.getUser()
+
       if (!user) return
 
       const today = format(new Date(), 'yyyy-MM-dd')
@@ -94,17 +101,22 @@ export default function HomePage() {
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
           Welcome to your Therapy Companion
         </h1>
-        <p className="text-gray-600 text-lg">Take a moment to check in with yourself</p>
+        <p className="text-gray-600 text-lg">
+          Take a moment to check in with yourself
+        </p>
       </header>
 
       {/* Daily Check-In Card */}
       <Card className="max-w-xl mx-auto p-6">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold tracking-tight">Daily Check-In</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">
+            Daily Check-In
+          </CardTitle>
           <CardDescription>
             Take a moment to reflect. How are you feeling today, and what are you focusing on?
           </CardDescription>
         </CardHeader>
+
         <CardContent className="space-y-4 mt-4">
           {checkIn ? (
             <div className="space-y-2">
@@ -130,6 +142,7 @@ export default function HomePage() {
                   className="h-12"
                 />
               </div>
+
               <div>
                 <Label htmlFor="focus">Focus</Label>
                 <Input
@@ -140,7 +153,12 @@ export default function HomePage() {
                   className="h-12"
                 />
               </div>
-              <Button size="lg" className="w-full h-12 text-base" onClick={handleSubmitCheckIn}>
+
+              <Button
+                size="lg"
+                className="w-full h-12 text-base"
+                onClick={handleSubmitCheckIn}
+              >
                 Submit
               </Button>
             </div>
@@ -150,21 +168,30 @@ export default function HomePage() {
 
       {/* Quick Links Section */}
       <section className="max-w-4xl mx-auto mt-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Access</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          Quick Access
+        </h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { href: '/sessions', title: 'Sessions' },
             { href: '/journal', title: 'Journal' },
             { href: '/goals', title: 'Goals' },
             { href: '/topics', title: 'Topics' },
-          ].map((link, index) => (
-            <Card key={index} className="text-center hover:shadow-md transition-shadow">
+          ].map((link) => (
+            <Card
+              key={link.href}
+              className="text-center hover:shadow-md transition-shadow"
+            >
               <CardContent className="p-6">
-                <CardTitle className="text-lg font-bold tracking-tight text-gray-900 mb-3">{link.title}</CardTitle>
-                <Button asChild className="h-10 w-full">
-                  <a href={link.href}>
+                <CardTitle className="text-lg font-bold tracking-tight text-gray-900 mb-3">
+                  {link.title}
+                </CardTitle>
+
+                <Button asChild size="sm" className="w-full h-10">
+                  <Link to={link.href}>
                     Go to {link.title}
-                  </a>
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
