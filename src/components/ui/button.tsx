@@ -1,15 +1,23 @@
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
 import { cn } from "@/lib/utils"
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  asChild?: boolean
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
   size?: "default" | "sm" | "lg" | "icon"
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+  (
+    { className, variant = "default", size = "default", asChild = false, ...props },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : "button"
+
     const variantClasses = {
-      default: "bg-primary text-primary-foreground shadow hover:bg-primary/90", 
+      default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
       destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
       outline: "border border-gray-300 bg-white shadow-sm hover:bg-gray-50 hover:text-foreground",
       secondary: "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-100/80",
@@ -25,14 +33,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button
+      <Comp
+        ref={ref}
         className={cn(
           "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50",
           variantClasses[variant],
           sizeClasses[size],
           className
         )}
-        ref={ref}
         {...props}
       />
     )
