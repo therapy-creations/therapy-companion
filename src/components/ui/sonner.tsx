@@ -11,20 +11,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
-        // STYLES: This property injects CSS directly into the button's 'style' attribute
+        // This is exactly like the 'red test'. 
+        // It injects the style directly into the HTML tag.
         actionButtonStyle: {
-          background: 'hsl(227, 58%, 80%)',
-          backgroundColor: 'hsl(227, 58%, 80%)',
+          backgroundColor: '#adb8ed',
+          background: '#adb8ed',
           color: '#ffffff',
         },
-        cancelButtonStyle: {
-          background: 'hsl(var(--muted))',
-          color: 'hsl(var(--muted-foreground))',
-        },
-        classNames: {
-          toast: "group toast",
-          actionButton: "group-[.toast]:!bg-[hsl(227,58%,80%)] group-[.toast]:!text-white",
-        },
+        // Apply to the toast card itself for consistency
+        style: {
+          borderRadius: '0.75rem',
+        }
       }}
       {...props}
     />
