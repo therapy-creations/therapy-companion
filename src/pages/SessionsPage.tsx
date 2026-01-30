@@ -216,20 +216,18 @@ export default function SessionsPage() {
                         {session.status}
                       </Badge>
                       <Button 
-                        variant="ghost" 
                         size="sm"
                         onClick={() => handleUpdateStatus(session, 'completed')}
-                        className="text-xs h-7 px-2 text-green-600 hover:text-green-700 hover:bg-green-50"
+                        className="text-xs h-7 px-2 text-white hover:bg-primary/90"
                       >
                         Mark Complete
                       </Button>
                     </div>
                   </div>
                   <Button 
-                    variant="ghost" 
                     size="icon" 
                     onClick={() => handleDeleteSession(session.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:bg-red-50"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
                     aria-label="Delete session"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -269,10 +267,9 @@ export default function SessionsPage() {
                   )}
                 </div>
                 <Button 
-                  variant="ghost" 
                   size="icon" 
                   onClick={() => handleDeleteSession(session.id)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-red-600"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity"
                   aria-label="Delete session"
                 >
                   <Trash2 className="h-4 w-4" />

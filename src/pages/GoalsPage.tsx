@@ -103,7 +103,7 @@ export default function GoalsPage() {
             <Card key={goal.id} className="flex items-center justify-between">
               <CardContent className="flex items-center justify-between w-full p-6">
                 <p className={goal.is_completed ? 'line-through text-gray-500' : 'text-gray-900'}>{goal.title}</p>
-                <Button variant="outline" size="sm" onClick={() => handleToggleComplete(goal)} className="h-10 px-6">
+                <Button size="sm" onClick={() => handleToggleComplete(goal)} className="h-10 px-6">
                   {goal.is_completed ? 'Undo' : 'Complete'}
                 </Button>
               </CardContent>

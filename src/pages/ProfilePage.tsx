@@ -100,7 +100,6 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent>
           <Button 
-            variant="destructive" 
             onClick={handleSignOut}
             className="w-full sm:w-auto"
           >

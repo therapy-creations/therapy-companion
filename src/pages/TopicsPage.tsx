@@ -182,10 +182,9 @@ export default function TopicsPage() {
                     </div>
                   </div>
                   <Button 
-                    variant="ghost" 
                     size="icon" 
                     onClick={() => handleDeleteTopic(topic.id)}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:bg-destructive/10"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -219,10 +218,9 @@ export default function TopicsPage() {
                 </button>
                 <p className="flex-1 text-gray-500 line-through decoration-gray-400">{topic.title}</p>
                 <Button 
-                  variant="ghost" 
                   size="icon" 
                   onClick={() => handleDeleteTopic(topic.id)}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
