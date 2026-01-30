@@ -17,8 +17,8 @@ export default function LandingPage() {
       <header className="flex items-center justify-between mb-12">
         <span className="text-2xl md:text-3xl font-bold text-gray-900">Therapy Pathways</span>
         <div className="flex gap-4">
-          <Button variant="ghost" onClick={handleLogin}>Log in</Button>
-          <Button variant="outline" onClick={() => navigate('/learn-more')}>Learn More</Button>
+          <Button onClick={handleLogin}>Log in</Button>
+          <Button onClick={() => navigate('/learn-more')}>Learn More</Button>
         </div>
       </header>
 
@@ -51,7 +51,7 @@ export default function LandingPage() {
 
         <section className="space-y-4">
           <Button size="lg" className="h-12 px-8 text-base" onClick={handleLogin}>Start Your Journey</Button>
-          <Button size="lg" variant="outline" className="h-12 px-8 text-base" onClick={() => navigate('/learn-more')}>Learn More</Button>
+          <Button size="lg" className="h-12 px-8 text-base" onClick={() => navigate('/learn-more')}>Learn More</Button>
         </section>
       </main>
 
