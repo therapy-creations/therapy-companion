@@ -47,11 +47,4 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"), // Optional: Helpful animations if needed
-  ],
-  corePlugins: {
-    // Disable unwanted utilities to prevent generation
-    fill: false,
-  },
 };
