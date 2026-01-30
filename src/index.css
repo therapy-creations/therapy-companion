@@ -14,8 +14,8 @@
     --popover: 210 95% 100%;
     --popover-foreground: 220 15% 15%;
     
-    /* Primary Color: #adb8ed (Periwinkle) */
-    --primary: 227 58% 80%;
+    /* Primary Color: Periwinkle */
+    --primary: 227 58% 80%; 
     --primary-foreground: 0 0% 100%;
     
     --secondary: 210 85% 92%;
@@ -30,7 +30,7 @@
     --input: 210 80% 90%;
     --ring: 227 58% 80%;
     
-    /* Sidebar */
+    /* Sidebar colors */
     --sidebar-background: 210 95% 100%;
     --sidebar-foreground: 220 15% 15%;
     --sidebar-primary: 227 58% 80%;
@@ -40,6 +40,9 @@
     --sidebar-border: 210 80% 90%;
     --sidebar-ring: 210 85% 90%;
     
+    /* Fonts & Radius */
+    --font-sans: 'Geist', sans-serif;
+    --font-mono: 'Geist Mono', monospace;
     --radius: 0.75rem;
   }
   
@@ -49,30 +52,38 @@
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Geist', sans-serif;
+    font-family: var(--font-sans);
   }
 }
 
-/* -------------------- Sonner / Toaster Overrides -------------------- */
-/* These rules target the auto-generated styles you see in DevTools.
-   The [data-button] attribute is what Sonner uses for the action button.
+/* -------------------- Sonner/Toaster Force Overrides -------------------- */
+/* The build tool (Vite) is injecting Sonner's CSS in a file like index-C6HNdGOs.css.
+   We use "html body" and "[data-button]" to ensure our specificity is higher 
+   than the auto-generated stylesheet.
 */
 
-[data-sonner-toaster] [data-button] {
+html body [data-sonner-toaster] [data-button] {
   background-color: hsl(227 58% 80%) !important;
   color: white !important;
   font-weight: 500 !important;
   border-radius: var(--radius) !important;
+  border: none !important;
+  opacity: 1 !important;
   transition: background-color 0.2s ease !important;
 }
 
-[data-sonner-toaster] [data-button]:hover {
+html body [data-sonner-toaster] [data-button]:hover {
   background-color: hsl(227 58% 72%) !important;
 }
 
-/* Optional: Ensures the toast itself matches your Aura theme cards */
-[data-sonner-toaster] [data-sonner-toast] {
+/* Optional: Ensure the toast container matches your card theme */
+html body [data-sonner-toaster] [data-sonner-toast] {
   background-color: hsl(var(--card)) !important;
   color: hsl(var(--card-foreground)) !important;
   border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+}
+
+[data-sonner-toaster] [data-description] {
+  color: hsl(var(--muted-foreground)) !important;
 }
