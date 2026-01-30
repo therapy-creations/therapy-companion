@@ -41,38 +41,22 @@
   }
 }
 
-/* -------------------------------------------------------------------------
-   GLOBAL FORCE OVERRIDE
-   This ensures that any "primary" or "blue-600" usage in the build 
-   is redirected to your Periwinkle color.
-   ------------------------------------------------------------------------- */
+@layer utilities {
+  .bg-primary {
+    background-color: #adb8ed !important;
+  }
+  
+  .text-primary, 
+  .text-blue-600 {
+    color: #adb8ed !important;
+  }
 
-/* High specificity selector to beat built-in library styles */
-html body .bg-primary, 
-html body [data-sonner-toaster] [data-button="true"],
-html body [data-sonner-toaster] a.bg-primary {
-  background-color: #adb8ed !important;
-  background: #adb8ed !important;
-  color: white !important;
-  --tw-bg-opacity: 1 !important;
-}
-
-/* Fix for icons and text that might still be using blue-600 */
-html body .text-primary,
-html body .text-blue-600 {
-  color: #adb8ed !important;
-  --tw-text-opacity: 1 !important;
-}
-
-html body .bg-primary:hover,
-html body [data-sonner-toaster] [data-button="true"]:hover {
-  background-color: #9ba7e0 !important;
-  background: #9ba7e0 !important;
-}
-
-/* Sonner Toast Container override */
-[data-sonner-toaster] [data-sonner-toast] {
-  background-color: white !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 0.75rem !important;
+  /* Specifically target the toast action button link/button */
+  [data-sonner-toaster] [data-button="true"],
+  [data-sonner-toaster] a.bg-primary {
+    background-color: #adb8ed !important;
+    background: #adb8ed !important;
+    color: white !important;
+    --tw-bg-opacity: 1 !important;
+  }
 }
