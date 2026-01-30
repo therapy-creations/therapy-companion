@@ -11,17 +11,22 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
-        // This is exactly like the 'red test'. 
-        // It injects the style directly into the HTML tag.
+        // THIS IS THE "RED TEST" IN CODE FORM:
+        // These styles are applied directly to the button/link 
+        // as inline styles, which beats any external CSS file.
         actionButtonStyle: {
-          backgroundColor: '#adb8ed',
-          background: '#adb8ed',
+          backgroundColor: '#adb8ed', // Your Periwinkle HSL(227, 58%, 80%)
           color: '#ffffff',
+          borderRadius: '0.75rem',
         },
-        // Apply to the toast card itself for consistency
+        cancelButtonStyle: {
+          backgroundColor: 'hsl(var(--muted))',
+          color: 'hsl(var(--muted-foreground))',
+          borderRadius: '0.75rem',
+        },
         style: {
           borderRadius: '0.75rem',
-        }
+        },
       }}
       {...props}
     />
