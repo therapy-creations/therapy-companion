@@ -4,9 +4,14 @@ import { cn } from "@/lib/utils"
 interface SelectContextValue {
   value?: string
   onValueChange?: (value: string) => void
+  open: boolean
+  setOpen: (open: boolean) => void
 }
 
-const SelectContext = React.createContext<SelectContextValue>({})
+const SelectContext = React.createContext<SelectContextValue>({
+  open: false,
+  setOpen: () => {},
+})
 
 interface SelectProps {
   value?: string
@@ -15,8 +20,10 @@ interface SelectProps {
 }
 
 export function Select({ value, onValueChange, children }: SelectProps) {
+  const [open, setOpen] = React.useState(false)
+
   return (
-    <SelectContext.Provider value={{ value, onValueChange }}>
+    <SelectContext.Provider value={{ value, onValueChange, open, setOpen }}>
       <div className="relative">{children}</div>
     </SelectContext.Provider>
   )
@@ -26,14 +33,22 @@ interface SelectTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
   ({ className, children, ...props }, ref) => {
-    const [open, setOpen] = React.useState(false)
+    const { open, setOpen } = React.useContext(SelectContext)
 
     return (
       <>
         <button
           ref={ref}
           type="button"
+          role="combobox"
+          aria-expanded={open}
+          aria-haspopup="listbox"
           onClick={() => setOpen(!open)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setOpen(false)
+            }
+          }}
           className={cn(
             "flex h-9 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50",
             className
@@ -78,8 +93,13 @@ interface SelectContentProps {
 }
 
 export function SelectContent({ children, className }: SelectContentProps) {
+  const { open } = React.useContext(SelectContext)
+
+  if (!open) return null
+
   return (
     <div
+      role="listbox"
       className={cn(
         "absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white py-1 shadow-lg",
         className
@@ -95,17 +115,22 @@ interface SelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function SelectItem({ value, children, className, ...props }: SelectItemProps) {
-  const { value: selectedValue, onValueChange } = React.useContext(SelectContext)
+  const { value: selectedValue, onValueChange, setOpen } = React.useContext(SelectContext)
   const isSelected = value === selectedValue
 
   return (
     <div
+      role="option"
+      aria-selected={isSelected}
       className={cn(
         "relative flex cursor-pointer select-none items-center px-3 py-2 text-sm outline-none hover:bg-gray-100",
         isSelected && "bg-blue-50 text-blue-600",
         className
       )}
-      onClick={() => onValueChange?.(value)}
+      onClick={() => {
+        onValueChange?.(value)
+        setOpen(false)
+      }}
       {...props}
     >
       {children}

@@ -10,8 +10,9 @@ const Separator = React.forwardRef<
 >(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => (
   <div
     ref={ref}
-    role={decorative ? "none" : "separator"}
-    aria-orientation={orientation}
+    role={decorative ? undefined : "separator"}
+    aria-hidden={decorative ? "true" : undefined}
+    aria-orientation={decorative ? undefined : orientation}
     className={cn(
       "shrink-0 bg-gray-200",
       orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]",
