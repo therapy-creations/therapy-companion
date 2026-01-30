@@ -3,25 +3,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -------------------- Base Theme -------------------- */
 @layer base {
   :root {
+    /* Aura Theme - Light Mode */
     --background: 210 95% 97%;
     --foreground: 220 15% 15%;
     --card: 210 95% 100%;
     --card-foreground: 220 15% 15%;
+    --popover: 210 95% 100%;
+    --popover-foreground: 220 15% 15%;
+    
+    /* Primary Color: #adb8ed (Periwinkle) */
     --primary: 227 58% 80%; 
     --primary-foreground: 0 0% 100%;
+    
+    --secondary: 210 85% 92%;
+    --secondary-foreground: 220 15% 15%;
+    --muted: 210 80% 95%;
+    --muted-foreground: 220 15% 45%;
+    --accent: 190 70% 85%;
+    --accent-foreground: 220 15% 15%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 98%;
     --border: 210 80% 90%;
+    --input: 210 80% 90%;
+    --ring: 227 58% 80%;
+    
     --radius: 0.75rem;
+  }
+  
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Geist', sans-serif;
   }
 }
 
 /* -------------------------------------------------------------------------
    THE NUCLEAR OVERRIDE
-   We are chaining HTML, BODY, and the Attribute. 
-   This beats almost anything short of an ID or inline style.
+   This section is placed OUTSIDE of @layer to ensure it loads last.
+   We target the 'a' tag specifically since it's ignoring button styles.
    ------------------------------------------------------------------------- */
 
+/* 1. Kill the 'rgb(37 99 235)' blue and force Periwinkle */
 html body [data-sonner-toaster] [data-toast] a.bg-primary,
 html body [data-sonner-toaster] [data-toast] button.bg-primary,
 html body [data-sonner-toaster] [data-toast] [data-button="true"],
@@ -30,13 +58,26 @@ html body [data-sonner-toaster] .bg-primary {
   background: #adb8ed !important;
   color: #ffffff !important;
   opacity: 1 !important;
+  --tw-bg-opacity: 1 !important; /* Overrides the tailwind opacity variable */
   border-radius: 0.75rem !important;
 }
 
-/* Hover Override */
+/* 2. Force the Hover State */
 html body [data-sonner-toaster] [data-toast] a.bg-primary:hover,
 html body [data-sonner-toaster] [data-toast] button.bg-primary:hover,
 html body [data-sonner-toaster] [data-toast] [data-button="true"]:hover {
   background-color: #9ba7e0 !important;
   background: #9ba7e0 !important;
+}
+
+/* 3. Ensure the Toast Container itself matches Aura */
+html body [data-sonner-toaster] [data-sonner-toast] {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+/* 4. Description text fix */
+html body [data-sonner-toaster] [data-description] {
+  color: hsl(var(--muted-foreground)) !important;
 }
