@@ -60,6 +60,7 @@ export function Layout({ children }: LayoutProps) {
                 to={item.path}
                 className={cn(
                   "flex flex-col items-center justify-center space-y-1 p-2 transition-colors",
+                  // Replaced blue-600 with primary to match your theme
                   isActive ? "text-primary" : "text-gray-500"
                 )}
               >
