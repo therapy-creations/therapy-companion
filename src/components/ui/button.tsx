@@ -9,7 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
     const variantClasses = {
-      default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+      default: "bg-[hsl(227,58%,80%)] text-white shadow hover:bg-[hsl(227,58%,72%)]",
       destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
       outline: "border border-gray-300 bg-white shadow-sm hover:bg-gray-50 hover:text-foreground",
       secondary: "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-100/80",
