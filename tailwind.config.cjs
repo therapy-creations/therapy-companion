@@ -13,15 +13,27 @@ module.exports = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#adb8ed", // Hardcode the periwinkle here
+          DEFAULT: "#adb8ed", // Hardcoded periwinkle to ensure it beats build defaults
           foreground: "#ffffff",
-      },
-    }  
+        },
+        // Re-adding your accent and destructive colors from your original config
+        accent: {
+          DEFAULT: "#84d19f",
+          foreground: "#ffffff",
+        },
+        destructive: {
+          DEFAULT: "#f06565",
+          foreground: "#ffffff",
+        },
+        card: {
+          DEFAULT: "#ffffff",
+          foreground: "#111827",
+        },
       },
       borderRadius: {
-        lg: "12px",
-        md: "8px",
-        sm: "4px",
+        lg: "var(--radius)", // Changed to use your CSS variable for consistency
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
@@ -34,4 +46,6 @@ module.exports = {
       },
     },
   },
+  // Ensure tailwind-merge works correctly with your animations
+  plugins: [require("tailwindcss-animate")],
 };
