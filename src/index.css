@@ -16,24 +16,27 @@
   }
 }
 
-/* --- THE FINAL OVERRIDE --- */
-/* We use #root and [data-sonner-toaster] together. 
-   An ID (#) + Attribute ([]) + Element (a) is mathematically 
-   stronger than any chain of classes the build tool generates. */
+/* -------------------------------------------------------------------------
+   THE NUCLEAR OVERRIDE
+   We are chaining HTML, BODY, and the Attribute. 
+   This beats almost anything short of an ID or inline style.
+   ------------------------------------------------------------------------- */
 
-#root [data-sonner-toaster] a, 
-#root [data-sonner-toaster] button,
-body [data-sonner-toaster] a.bg-primary,
-body [data-sonner-toaster] .bg-primary {
+html body [data-sonner-toaster] [data-toast] a.bg-primary,
+html body [data-sonner-toaster] [data-toast] button.bg-primary,
+html body [data-sonner-toaster] [data-toast] [data-button="true"],
+html body [data-sonner-toaster] .bg-primary {
   background-color: #adb8ed !important;
   background: #adb8ed !important;
   color: #ffffff !important;
-  fill: #ffffff !important;
-  -webkit-appearance: none;
+  opacity: 1 !important;
+  border-radius: 0.75rem !important;
 }
 
-#root [data-sonner-toaster] a:hover, 
-#root [data-sonner-toaster] button:hover {
+/* Hover Override */
+html body [data-sonner-toaster] [data-toast] a.bg-primary:hover,
+html body [data-sonner-toaster] [data-toast] button.bg-primary:hover,
+html body [data-sonner-toaster] [data-toast] [data-button="true"]:hover {
   background-color: #9ba7e0 !important;
   background: #9ba7e0 !important;
 }
