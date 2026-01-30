@@ -3,6 +3,32 @@
 @tailwind components;
 @tailwind utilities;
 
+html body [data-sonner-toaster] [data-button] {
+  background-color: hsl(227 58% 80%) !important;
+  color: white !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius) !important;
+  border: none !important;
+  opacity: 1 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+html body [data-sonner-toaster] [data-button]:hover {
+  background-color: hsl(227 58% 72%) !important;
+}
+
+/* Optional: Ensure the toast container matches your card theme */
+html body [data-sonner-toaster] [data-sonner-toast] {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+}
+
+[data-sonner-toaster] [data-description] {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
 /* -------------------- Base Theme -------------------- */
 @layer base {
   :root {
@@ -54,36 +80,4 @@
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
   }
-}
-
-/* -------------------- Sonner/Toaster Force Overrides -------------------- */
-/* The build tool (Vite) is injecting Sonner's CSS in a file like index-C6HNdGOs.css.
-   We use "html body" and "[data-button]" to ensure our specificity is higher 
-   than the auto-generated stylesheet.
-*/
-
-html body [data-sonner-toaster] [data-button] {
-  background-color: hsl(227 58% 80%) !important;
-  color: white !important;
-  font-weight: 500 !important;
-  border-radius: var(--radius) !important;
-  border: none !important;
-  opacity: 1 !important;
-  transition: background-color 0.2s ease !important;
-}
-
-html body [data-sonner-toaster] [data-button]:hover {
-  background-color: hsl(227 58% 72%) !important;
-}
-
-/* Optional: Ensure the toast container matches your card theme */
-html body [data-sonner-toaster] [data-sonner-toast] {
-  background-color: hsl(var(--card)) !important;
-  color: hsl(var(--card-foreground)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: var(--radius) !important;
-}
-
-[data-sonner-toaster] [data-description] {
-  color: hsl(var(--muted-foreground)) !important;
 }
