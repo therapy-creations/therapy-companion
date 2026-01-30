@@ -7,27 +7,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "#e5e7eb",
-        input: "#f3f4f6",
-        ring: "#e0e7ff",
-        background: "#ffffff",
-        foreground: "#111827",
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#adb8ed",
+          DEFAULT: "#adb8ed", // Hardcode the periwinkle here
           foreground: "#ffffff",
-        },
-        accent: {
-          DEFAULT: "#84d19f",
-          foreground: "#ffffff",
-        },
-        destructive: {
-          DEFAULT: "#f06565",
-          foreground: "#ffffff",
-        },
-        card: {
-          DEFAULT: "#ffffff",
-          foreground: "#111827",
-        },
+      },
+    }  
       },
       borderRadius: {
         lg: "12px",
