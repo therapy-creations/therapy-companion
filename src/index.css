@@ -48,7 +48,7 @@
 
 /* Targets anything using bg-primary or specifically blue-600 */
 html body .bg-primary, 
-html body .text-blue-600,
+html body .text-primary,
 html body [data-sonner-toaster] [data-button="true"],
 html body [data-sonner-toaster] a.bg-primary {
   background-color: #adb8ed !important;
