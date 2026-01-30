@@ -3,32 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html body [data-sonner-toaster] [data-button] {
-  background-color: hsl(227 58% 80%) !important;
-  color: white !important;
-  font-weight: 500 !important;
-  border-radius: var(--radius) !important;
-  border: none !important;
-  opacity: 1 !important;
-  transition: background-color 0.2s ease !important;
-}
-
-html body [data-sonner-toaster] [data-button]:hover {
-  background-color: hsl(227 58% 72%) !important;
-}
-
-/* Optional: Ensure the toast container matches your card theme */
-html body [data-sonner-toaster] [data-sonner-toast] {
-  background-color: hsl(var(--card)) !important;
-  color: hsl(var(--card-foreground)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: var(--radius) !important;
-}
-
-[data-sonner-toaster] [data-description] {
-  color: hsl(var(--muted-foreground)) !important;
-}
-
 /* -------------------- Base Theme -------------------- */
 @layer base {
   :root {
@@ -40,7 +14,7 @@ html body [data-sonner-toaster] [data-sonner-toast] {
     --popover: 210 95% 100%;
     --popover-foreground: 220 15% 15%;
     
-    /* Primary Color: Periwinkle */
+    /* Primary Color: #adb8ed (Periwinkle) */
     --primary: 227 58% 80%; 
     --primary-foreground: 0 0% 100%;
     
@@ -56,7 +30,7 @@ html body [data-sonner-toaster] [data-sonner-toast] {
     --input: 210 80% 90%;
     --ring: 227 58% 80%;
     
-    /* Sidebar colors */
+    /* Sidebar */
     --sidebar-background: 210 95% 100%;
     --sidebar-foreground: 220 15% 15%;
     --sidebar-primary: 227 58% 80%;
@@ -66,9 +40,6 @@ html body [data-sonner-toaster] [data-sonner-toast] {
     --sidebar-border: 210 80% 90%;
     --sidebar-ring: 210 85% 90%;
     
-    /* Fonts & Radius */
-    --font-sans: 'Geist', sans-serif;
-    --font-mono: 'Geist Mono', monospace;
     --radius: 0.75rem;
   }
   
@@ -78,6 +49,48 @@ html body [data-sonner-toaster] [data-sonner-toast] {
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans);
+    font-family: 'Geist', sans-serif;
   }
+}
+
+/* -------------------- The "Aura" Force Overrides -------------------- */
+/* We target the <a> tag (anchor) directly since your action buttons 
+   are rendering as links with the .bg-primary class. 
+*/
+
+/* 1. Force the Action Button/Link color */
+[data-sonner-toaster] a.bg-primary,
+[data-sonner-toaster] button.bg-primary,
+[data-sonner-toaster] [data-button="true"] {
+  background-color: hsl(227 58% 80%) !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* 2. Force the Hover State */
+[data-sonner-toaster] a.bg-primary:hover,
+[data-sonner-toaster] button.bg-primary:hover,
+[data-sonner-toaster] [data-button="true"]:hover {
+  background-color: hsl(227 58% 72%) !important;
+  transform: translateY(-1px);
+}
+
+/* 3. Ensure the Toast Container follows Aura Theme */
+[data-sonner-toaster] [data-sonner-toast] {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* 4. Fix Description and Close Button colors */
+[data-sonner-toaster] [data-description] {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+[data-sonner-toaster] [data-close-button] {
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
 }
