@@ -3,94 +3,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* -------------------- Base Theme -------------------- */
 @layer base {
   :root {
-    /* Aura Theme - Light Mode */
     --background: 210 95% 97%;
     --foreground: 220 15% 15%;
     --card: 210 95% 100%;
     --card-foreground: 220 15% 15%;
-    --popover: 210 95% 100%;
-    --popover-foreground: 220 15% 15%;
-    
-    /* Primary Color: #adb8ed (Periwinkle) */
     --primary: 227 58% 80%; 
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 210 85% 92%;
-    --secondary-foreground: 220 15% 15%;
-    --muted: 210 80% 95%;
-    --muted-foreground: 220 15% 45%;
-    --accent: 190 70% 85%;
-    --accent-foreground: 220 15% 15%;
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 98%;
     --border: 210 80% 90%;
-    --input: 210 80% 90%;
-    --ring: 227 58% 80%;
-    
-    /* Sidebar */
-    --sidebar-background: 210 95% 100%;
-    --sidebar-foreground: 220 15% 15%;
-    --sidebar-primary: 227 58% 80%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 190 70% 85%;
-    --sidebar-accent-foreground: 220 15% 15%;
-    --sidebar-border: 210 80% 90%;
-    --sidebar-ring: 210 85% 90%;
-    
     --radius: 0.75rem;
   }
-  
-  * {
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Geist', sans-serif;
-  }
 }
 
-/* -------------------- The "Aura" Force Overrides -------------------- */
-/* We target the <a> tag (anchor) directly since your action buttons 
-   are rendering as links with the .bg-primary class. 
-*/
+/* --- THE FINAL OVERRIDE --- */
+/* We use #root and [data-sonner-toaster] together. 
+   An ID (#) + Attribute ([]) + Element (a) is mathematically 
+   stronger than any chain of classes the build tool generates. */
 
-/* 1. Force the Action Button/Link color */
-[data-sonner-toaster] a.bg-primary,
-[data-sonner-toaster] button.bg-primary,
-[data-sonner-toaster] [data-button="true"] {
-  background-color: hsl(227 58% 80%) !important;
+#root [data-sonner-toaster] a, 
+#root [data-sonner-toaster] button,
+body [data-sonner-toaster] a.bg-primary,
+body [data-sonner-toaster] .bg-primary {
+  background-color: #adb8ed !important;
+  background: #adb8ed !important;
   color: #ffffff !important;
-  opacity: 1 !important;
-  border-radius: var(--radius) !important;
-  box-shadow: var(--shadow-sm) !important;
+  fill: #ffffff !important;
+  -webkit-appearance: none;
 }
 
-/* 2. Force the Hover State */
-[data-sonner-toaster] a.bg-primary:hover,
-[data-sonner-toaster] button.bg-primary:hover,
-[data-sonner-toaster] [data-button="true"]:hover {
-  background-color: hsl(227 58% 72%) !important;
-  transform: translateY(-1px);
-}
-
-/* 3. Ensure the Toast Container follows Aura Theme */
-[data-sonner-toaster] [data-sonner-toast] {
-  background-color: hsl(var(--card)) !important;
-  color: hsl(var(--card-foreground)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: var(--radius) !important;
-}
-
-/* 4. Fix Description and Close Button colors */
-[data-sonner-toaster] [data-description] {
-  color: hsl(var(--muted-foreground)) !important;
-}
-
-[data-sonner-toaster] [data-close-button] {
-  background-color: hsl(var(--background)) !important;
-  border: 1px solid hsl(var(--border)) !important;
+#root [data-sonner-toaster] a:hover, 
+#root [data-sonner-toaster] button:hover {
+  background-color: #9ba7e0 !important;
+  background: #9ba7e0 !important;
 }
