@@ -14,9 +14,6 @@
     --popover: 210 95% 100%;
     --popover-foreground: 220 15% 15%;
     
-    /* REMOVE THIS LINE - it conflicts with Tailwind */
-    /* --primary: #adb8ed; */
-    
     /* REPLACE WITH HSL FORMAT */
     --primary: 227 58% 80%; /* #adb8ed in HSL */
     --primary-foreground: 0 0% 100%; /* white */
