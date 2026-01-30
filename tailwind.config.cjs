@@ -30,8 +30,8 @@ module.exports = {
         },
       },
         safelist: [
-        "bg-[#adb8ed]",
-        "hover:bg-[#adb8ed]/90",
+          "bg-[#adb8ed]",
+          "hover:bg-[#adb8ed]/90",
       ],
       // Set border radius sizes (optional)
       borderRadius: {
