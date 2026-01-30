@@ -2,11 +2,10 @@
 module.exports = {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Ensure Tailwind applies to your project files
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
-      // Define consistent light colors
       colors: {
         border: "#e5e7eb",
         input: "#f3f4f6",
@@ -15,31 +14,26 @@ module.exports = {
         foreground: "#111827",
         primary: {
           DEFAULT: "#adb8ed",
+          foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#84d19f", // Accent green
+          DEFAULT: "#84d19f",
           foreground: "#ffffff",
         },
         destructive: {
-          DEFAULT: "#f06565", // Red for error states
+          DEFAULT: "#f06565",
           foreground: "#ffffff",
         },
         card: {
-          DEFAULT: "#ffffff", // Card background (white)
+          DEFAULT: "#ffffff",
           foreground: "#111827",
         },
       },
-        safelist: [
-          "bg-[#adb8ed]",
-          "hover:bg-[#adb8ed]/90",
-      ],
-      // Set border radius sizes (optional)
       borderRadius: {
         lg: "12px",
         md: "8px",
         sm: "4px",
       },
-      // Optional animations
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
       },
