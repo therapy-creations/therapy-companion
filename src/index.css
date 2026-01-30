@@ -12,7 +12,7 @@
   --popover: 210 95% 100%;
   --popover-foreground: 220 15% 15%;
   
-  /* Aura Periwinkle */
+  /* Aura Periwinkle: #adb8ed */
   --primary: 227 58% 80%; 
   --primary-foreground: 0 0% 100%;
   
@@ -42,34 +42,35 @@
 }
 
 /* -------------------------------------------------------------------------
-   NUCLEAR OVERRIDE: FORCE PERIWINKLE (#adb8ed)
-   This targets BOTH buttons and the blue-600 leakage from Layout.
+   GLOBAL FORCE OVERRIDE
+   This ensures that any "primary" or "blue-600" usage in the build 
+   is redirected to your Periwinkle color.
    ------------------------------------------------------------------------- */
 
-/* Targets anything using bg-primary or specifically blue-600 */
+/* High specificity selector to beat built-in library styles */
 html body .bg-primary, 
-html body .text-primary,
 html body [data-sonner-toaster] [data-button="true"],
 html body [data-sonner-toaster] a.bg-primary {
   background-color: #adb8ed !important;
+  background: #adb8ed !important;
   color: white !important;
-  border-color: #adb8ed !important;
-  --tw-text-opacity: 1 !important;
   --tw-bg-opacity: 1 !important;
 }
 
-/* Specific fix for the text in your Mobile Nav since it uses 'text-blue-600' */
+/* Fix for icons and text that might still be using blue-600 */
+html body .text-primary,
 html body .text-blue-600 {
-  color: #8a99e4 !important; /* A slightly darker periwinkle for text legibility */
+  color: #adb8ed !important;
+  --tw-text-opacity: 1 !important;
 }
 
-/* Hover States */
 html body .bg-primary:hover,
 html body [data-sonner-toaster] [data-button="true"]:hover {
   background-color: #9ba7e0 !important;
+  background: #9ba7e0 !important;
 }
 
-/* Ensure Toasts follow the theme */
+/* Sonner Toast Container override */
 [data-sonner-toaster] [data-sonner-toast] {
   background-color: white !important;
   border: 1px solid #e2e8f0 !important;
