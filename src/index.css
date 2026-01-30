@@ -58,6 +58,10 @@
     /* Spacing & border radius */
     --radius: 0.75rem;
     --spacing: 0.25rem;
+
+    /* -------------------- ShadCN/UI Button Overrides -------------------- */
+    --button-bg: #adb8ed; /* overrides default blue */
+    --button-foreground: #ffffff; /* white text on buttons */
   }
 
   * {
