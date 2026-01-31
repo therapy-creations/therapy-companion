@@ -30,7 +30,7 @@
     "tailwindcss": "3.3.5",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^4.3.5",
-    "@radix-ui/react-slot"
+    "@radix-ui/react-slot" : "^1.0.6"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.2",
