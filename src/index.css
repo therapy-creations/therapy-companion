@@ -1,42 +1,81 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* -------------------- Aura Root Theme -------------------- */
+/* =========================
+   Global Theme Variables
+   ========================= */
+
 :root {
+  /* Base */
   --background: 210 95% 97%;
   --foreground: 220 15% 15%;
+
+  /* Cards / Popovers */
   --card: 210 95% 100%;
   --card-foreground: 220 15% 15%;
+
   --popover: 210 95% 100%;
   --popover-foreground: 220 15% 15%;
-  
-  /* Aura Periwinkle: #adb8ed */
-  --primary: 227 58% 80%; 
+
+  /* Primary (Periwinkle) */
+  --primary: 227 58% 80%;
   --primary-foreground: 0 0% 100%;
-  
+
+  /* Secondary */
   --secondary: 210 85% 92%;
   --secondary-foreground: 220 15% 15%;
+
+  /* Muted */
   --muted: 210 80% 95%;
   --muted-foreground: 220 15% 45%;
+
+  /* Accent */
   --accent: 190 70% 85%;
   --accent-foreground: 220 15% 15%;
+
+  /* Destructive */
   --destructive: 0 75% 55%;
   --destructive-foreground: 0 0% 98%;
+
+  /* Borders / Inputs / Focus */
   --border: 210 80% 90%;
   --input: 210 80% 90%;
   --ring: 227 58% 80%;
-  
+
+  /* Layout */
   --radius: 0.75rem;
 }
+
+/* =========================
+   Base Styles
+   ========================= */
 
 @layer base {
   * {
     @apply border-border;
   }
+
+  html,
+  body {
+    height: 100%;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Geist', sans-serif;
+    margin: 0;
+  }
+}
+
+/* =========================
+   Optional: Better Defaults
+   ========================= */
+
+@layer components {
+  button {
+    @apply focus-visible:outline-none;
   }
 }
