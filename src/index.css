@@ -40,23 +40,3 @@
     font-family: 'Geist', sans-serif;
   }
 }
-
-@layer utilities {
-  .bg-primary {
-    background-color: #adb8ed !important;
-  }
-  
-  .text-primary, 
-  .text-blue-600 {
-    color: #adb8ed !important;
-  }
-
-  /* Specifically target the toast action button link/button */
-  [data-sonner-toaster] [data-button="true"],
-  [data-sonner-toaster] a.bg-primary {
-    background-color: #adb8ed !important;
-    background: #adb8ed !important;
-    color: white !important;
-    --tw-bg-opacity: 1 !important;
-  }
-}
